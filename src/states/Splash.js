@@ -25,6 +25,7 @@ export default class extends Phaser.State {
     this.load.image('planet', 'assets/images/planet.png');
     this.load.image('moon', 'assets/images/moon.png');
     this.load.image('earth', 'assets/images/earth.png');
+    this.load.image('marker', 'assets/images/marker.png');
   }
 
   create() {
