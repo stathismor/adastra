@@ -9,7 +9,7 @@ export default class extends Ship {
 
     this.movement.maxVelocity = 200;
     this.movement.rotationSpeed = 2; // degrees/second
-    this.movement.acceleration = 200,
+    this.movement.acceleration = 200;
 
     this.addBehaviour(new AcceleratedFollow(this.game, this, target));
     this.addBehaviour(new EnemyFire(this.game, this, target));

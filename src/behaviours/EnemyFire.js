@@ -1,12 +1,9 @@
 import Phaser from 'phaser';
 
-import { getRandomPoint } from '../utils';
-
 import Behaviour from './Behaviour';
+import HitShake from './HitShake';
 import BulletWeapon from '../weapons/BulletWeapon';
 
-const ENEMY_SPAWN_MIN_DISTANCE = 300;
-const ENEMY_SPAWN_MAX_DISTANCE = 500;
 const RAY_DISTANCE = 600;
 
 export default class extends Behaviour {
@@ -17,6 +14,8 @@ export default class extends Behaviour {
       { fireRate: 1000,
         bulletSpeed: 300,
       }).getWeapon();
+    // @TODO: Not sure this is the right place for it
+    owner.addBehaviour(new HitShake(this.game, owner, target, this.weapon.bullets));
   }
 
   update() {
@@ -48,15 +47,5 @@ export default class extends Behaviour {
     if (intersects) {
       this.weapon.fire();
     }
-  }
-
-  collisionHandler(enemy, bullet) {
-    bullet.kill();
-    // Respawn on a random position
-    const e = enemy;
-    const randomPoint = getRandomPoint(this.game, this.owner.x, this.owner.y,
-                                       ENEMY_SPAWN_MIN_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE);
-    e.x = randomPoint.x;
-    e.y = randomPoint.y;
   }
 }
