@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack",
-    "deploy": "webpack --config webpack.production.config.js",
+    "prod": "webpack --config webpack.production.config.js",
+    "deploy": "npm run prod && gh-pages -d deploy",
     "test": "standard",
     "start": "NPM_CONFIG_PRODUCTION=true node heroku/index.js"
   },
@@ -26,6 +27,7 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-react": "^6.9.0",
     "expose-loader": "^0.7.1",
+    "gh-pages": "^0.12.0",
     "webpack": "^2.2.0"
   },
   "_comment": "p2, phaser and pixi are here just to please eslint. Probably webpack alias and eslint don't like each other.",
