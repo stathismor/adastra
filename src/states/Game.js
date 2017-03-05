@@ -65,10 +65,6 @@ export default class extends Phaser.State {
     // Create the actual particles
     this.smokeEmitter.makeParticles('smoke');
 
-    // Start emitting smoke particles one at a time (explode=false) with a
-    // lifespan of SMOKE_LIFETIME at 50ms intervals
-    this.smokeEmitter.start(false, SMOKE_LIFETIME, 50);
-
     const ships = this.game.add.group();
     ships.add(this.player);
 
@@ -136,24 +132,30 @@ export default class extends Phaser.State {
     this.player.visible = false;
     this.game.camera.focusOnXY(0, 0);
 
-    const initialY = this.game.world.height * 0.4;
-    const mothership = new Ship(this.game, -10, initialY, 'mothership');
+    const startY = this.game.world.height * 0.4;
+    const endY = this.game.world.height * 0.4;
+    const mothership = new Ship(this.game, -10, startY, 'mothership');
     this.game.add.existing(mothership);
 
     const motherArrives = this.game.add.tween(mothership)
-      .to({ x: -10, y: 0 }, 2000, Phaser.Easing.Cubic.Out, true);
+      .to({ y: 0 }, 2000, Phaser.Easing.Cubic.Out, true);
     motherArrives.onComplete.addOnce(() => {
       this.player.visible = true;
     });
 
     const shipMoves = this.game.add.tween(this.player)
-      .to({ x: 32, y: 0 }, 800, Phaser.Easing.Exponential.Out, false);
+      .to({ x: 32 }, 800, Phaser.Easing.Exponential.Out, false);
     motherArrives.chain(shipMoves);
 
     shipMoves.onComplete.addOnce(() => {
       this.player.visible = true;
+      // Start emitting smoke particles one at a time (explode=false) with a
+      // lifespan of SMOKE_LIFETIME at 50ms intervals
+      this.smokeEmitter.start(false, SMOKE_LIFETIME, 50);
+
       this.player.body.velocity.set(800, 0);
       this.canUpdate = true;
+      this.game.time.events.add(Phaser.Timer.SECOND * 2, () => { mothership.kill(); }, this);
     }, this);
   }
 }
