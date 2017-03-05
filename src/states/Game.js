@@ -16,6 +16,7 @@ const SMOKE_LIFETIME = 500; // milliseconds
 export default class extends Phaser.State {
   init() {}
   preload() {
+    this.canUpdate = false;
     this.game.time.advancedTiming = true;
   }
 
@@ -23,8 +24,8 @@ export default class extends Phaser.State {
     this.game.stage.backgroundColor = '#222523';
 
     this.player = new Ship(this.game,
-                           this.game.world.centerX,
-                           this.game.world.centerY,
+                           0,
+                           0,
                            'ship');
 
     this.bg1 = new Phaser.TileSprite(this.game,
@@ -73,8 +74,8 @@ export default class extends Phaser.State {
 
     this.enemies = this.game.add.group();
     this.enemy = new Enemy(this.game,
-                           this.game.world.centerX / 3,
-                           this.game.world.centerY / 3,
+                           3500,
+                           this.game.world.centerY,
                            'baddie',
                            this.player);
     this.enemies.add(this.enemy);
@@ -88,6 +89,8 @@ export default class extends Phaser.State {
     }
 
     this.controller = new Control(this.game, this.player);
+
+    this.intro();
   }
 
   createInstructions() {
@@ -105,12 +108,15 @@ export default class extends Phaser.State {
   }
 
   update() {
-    this.camera.update();
-    this.controller.update();
+    // @TODO: Maybe there is a more elegant way of this this
+    if (this.canUpdate) {
+      this.camera.update();
+      this.controller.update();
 
-    const offset = 18;
-    this.smokeEmitter.x = this.player.centerX - (Math.cos(this.player.rotation) * offset);
-    this.smokeEmitter.y = this.player.centerY - (Math.sin(this.player.rotation) * offset);
+      const offset = 18;
+      this.smokeEmitter.x = this.player.centerX - (Math.cos(this.player.rotation) * offset);
+      this.smokeEmitter.y = this.player.centerY - (Math.sin(this.player.rotation) * offset);
+    }
   }
 
   render() {
@@ -124,5 +130,30 @@ export default class extends Phaser.State {
       this.game.debug.spriteInfo(this.player, 32, 32);
       this.game.debug.text(this.game.time.fps || '--', 2, 14, '#00ff00');
     }
+  }
+
+  intro() {
+    this.player.visible = false;
+    this.game.camera.focusOnXY(0, 0);
+
+    const initialY = this.game.world.height * 0.4;
+    const mothership = new Ship(this.game, -10, initialY, 'mothership');
+    this.game.add.existing(mothership);
+
+    const motherArrives = this.game.add.tween(mothership)
+      .to({ x: -10, y: 0 }, 2000, Phaser.Easing.Cubic.Out, true);
+    motherArrives.onComplete.addOnce(() => {
+      this.player.visible = true;
+    });
+
+    const shipMoves = this.game.add.tween(this.player)
+      .to({ x: 32, y: 0 }, 800, Phaser.Easing.Exponential.Out, false);
+    motherArrives.chain(shipMoves);
+
+    shipMoves.onComplete.addOnce(() => {
+      this.player.visible = true;
+      this.player.body.velocity.set(800, 0);
+      this.canUpdate = true;
+    }, this);
   }
 }
