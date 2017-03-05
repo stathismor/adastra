@@ -34,6 +34,10 @@ export default class extends Behaviour {
     bullet.kill();
     // Respawn on a random position
     const e = enemy;
+
+    // @TODO: Need to do this with a pool of enemies
+    e.kill();
+    e.revive();
     const randomPoint = getRandomPoint(this.game, this.owner.x, this.owner.y,
                                        ENEMY_SPAWN_MIN_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE);
     e.x = randomPoint.x;

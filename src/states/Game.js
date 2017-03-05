@@ -68,12 +68,21 @@ export default class extends Phaser.State {
     const ships = this.game.add.group();
     ships.add(this.player);
 
+    //  An explosion pool
+    const explosions = this.game.add.group();
+    explosions.createMultiple(10, 'explosion');
+    explosions.forEach((explosion) => {
+      explosion.anchor.setTo(0.5);
+      explosion.animations.add('explode');
+    });
+
     this.enemies = this.game.add.group();
     this.enemy = new Enemy(this.game,
                            3500,
                            this.game.world.centerY,
                            'baddie',
-                           this.player);
+                           this.player,
+                           explosions);
     this.enemies.add(this.enemy);
 
     this.player.addBehaviour(new PlayerFire(this.game, this.player, this.enemies));
