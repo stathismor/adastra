@@ -24,5 +24,7 @@ export default class extends Behaviour {
   collisionHandler(target, bullet) {
     bullet.kill();
     this.game.camera.shake(SHAKE_INTENSITY, SHAKE_DURATION);
+
+    target.lives--;
   }
 }

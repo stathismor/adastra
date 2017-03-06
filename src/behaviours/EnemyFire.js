@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import Behaviour from './Behaviour';
-import HitShake from './HitShake';
+import PlayerHit from './PlayerHit';
 import BulletWeapon from '../weapons/BulletWeapon';
 
 const RAY_DISTANCE = 600;
@@ -15,7 +15,7 @@ export default class extends Behaviour {
         bulletSpeed: 300,
       }).getWeapon();
     // @TODO: Not sure this is the right place for it
-    owner.addBehaviour(new HitShake(this.game, owner, target, this.weapon.bullets));
+    owner.addBehaviour(new PlayerHit(this.game, owner, target, this.weapon.bullets));
   }
 
   update() {

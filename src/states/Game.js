@@ -110,6 +110,7 @@ export default class extends Phaser.State {
 
       this.game.debug.spriteInfo(this.player, 32, 32);
       this.game.debug.text(this.game.time.fps || '--', 2, 14, '#00ff00');
+      this.game.debug.text(`lives: ${this.player.lives}`, this.game.camera.view.width - 90, 20, '#00ff00');
     }
   }
 
