@@ -5,7 +5,8 @@ import Behaviour from './Behaviour';
 const SIDEWAYS_FRICTION = 0.987;
 const IMMOBILISE_LERP = 0.007;
 const STOP_OFFSET = 1.5;
-
+const MAX_THRUST_DELAY = 1550;
+const MAX_THRUST_RATE = 0.95;
 
 export default class extends Behaviour {
 
@@ -15,7 +16,6 @@ export default class extends Behaviour {
     this.cursors = game.input.keyboard.createCursorKeys();
     this.initKeyboard();
     this.thrustDownAt = 0;
-    this.THRUST_DELAY = 500;
   }
 
   initKeyboard() {
@@ -40,21 +40,20 @@ export default class extends Behaviour {
         this.thrustDownAt = this.game.time.now;
       }
 
-      if (this.game.time.now - this.thrustDownAt < this.THRUST_DELAY) {
-        this.owner.frame = 1;
-        // @TODO Need to handle this better. When thrust is happening in the same direction
-        // with full speed, probably frame 2 is better.
-        // this.owner.frame = this.owner.body.speed > this.owner.movement.maxVelocity * 0.8 ?
-        // 2 : 1;
-      } else {
-        this.owner.frame = 2;
-      }
-
+      const magnitude = this.owner.body.velocity.getMagnitude();
       this.game.physics.arcade.accelerationFromRotation(this.owner.rotation,
                                                         this.owner.movement.acceleration,
                                                         this.owner.body.acceleration);
       this.owner.body.velocity.setMagnitude(Math.min(this.owner.movement.maxVelocity,
-                                                     this.owner.body.velocity.getMagnitude()));
+                                                     magnitude));
+
+      if (((magnitude / this.owner.movement.maxVelocity) >
+           MAX_THRUST_RATE) ||
+          ((this.game.time.now - this.thrustDownAt) > MAX_THRUST_DELAY)) {
+        this.owner.frame = 2;
+      } else {
+        this.owner.frame = 1;
+      }
     } else if (this.key_reverse.isDown) {
       this.owner.frame = 3;
       this.game.physics.arcade.accelerationFromRotation(this.owner.rotation,

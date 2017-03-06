@@ -12,12 +12,11 @@ import PlayerFire from '../behaviours/PlayerFire';
 
 const MAX_BLINKING_STARS = 40;
 const BG_SIZE = 1920;
-const SMOKE_LIFETIME = 500; // milliseconds
 
 export default class extends Phaser.State {
   init() {}
   preload() {
-    this.canUpdate = false;
+    this.game.canUpdate = false;
     this.game.time.advancedTiming = true;
   }
 
@@ -49,19 +48,6 @@ export default class extends Phaser.State {
 
     this.backgrounds = this.game.add.group();
     this.backgrounds.addMultiple([this.bg1, this.bg2]);
-
-    this.smokeEmitter = this.game.add.emitter(0, 0, 10);
-    // Set motion parameters for the emitted particles
-    this.smokeEmitter.gravity = 0;
-    this.smokeEmitter.setXSpeed(0, 0);
-    this.smokeEmitter.setYSpeed(-80, -50); // make smoke drift upwards
-
-    // Make particles fade out after 1000ms
-    this.smokeEmitter.setAlpha(1, 0, SMOKE_LIFETIME,
-        Phaser.Easing.Linear.InOut);
-
-    // Create the actual particles
-    this.smokeEmitter.makeParticles('smoke');
 
     const ships = this.game.add.group();
     ships.add(this.player);
@@ -108,13 +94,9 @@ export default class extends Phaser.State {
 
   update() {
     // @TODO: Maybe there is a more elegant way of this this
-    if (this.canUpdate) {
+    if (this.game.canUpdate) {
       this.camera.update();
       this.controller.update();
-
-      const offset = 18;
-      this.smokeEmitter.x = this.player.centerX - (Math.cos(this.player.rotation) * offset);
-      this.smokeEmitter.y = this.player.centerY - (Math.sin(this.player.rotation) * offset);
     }
   }
 
@@ -152,12 +134,8 @@ export default class extends Phaser.State {
 
     shipMoves.onComplete.addOnce(() => {
       this.player.visible = true;
-      // Start emitting smoke particles one at a time (explode=false) with a
-      // lifespan of SMOKE_LIFETIME at 50ms intervals
-      this.smokeEmitter.start(false, SMOKE_LIFETIME, 50);
-
       this.player.body.velocity.set(800, 0);
-      this.canUpdate = true;
+      this.game.canUpdate = true;
       this.game.time.events.add(Phaser.Timer.SECOND * 2, () => { mothership.kill(); }, this);
     }, this);
   }
