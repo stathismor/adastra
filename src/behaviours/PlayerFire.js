@@ -9,9 +9,8 @@ const ENEMY_SPAWN_MIN_DISTANCE = 300;
 const ENEMY_SPAWN_MAX_DISTANCE = 500;
 
 export default class extends Behaviour {
-  constructor(game, owner, enemies) {
+  constructor(game, owner) {
     super(game, owner);
-    this.enemies = enemies;
     this.weapon = new BulletWeapon(game, owner, 'blue_bullet').getWeapon();
 
     this.key_fire_1 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -23,7 +22,7 @@ export default class extends Behaviour {
       this.weapon.fire();
     }
 
-    this.game.physics.arcade.collide(this.enemies,
+    this.game.physics.arcade.collide(this.game.enemiesGroup,
                                      this.weapon.bullets,
                                      this.collisionHandler,
                                      null,

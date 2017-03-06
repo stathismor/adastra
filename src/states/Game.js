@@ -6,6 +6,7 @@ import Ship from '../sprites/Ship';
 import Enemy from '../sprites/Enemy';
 import BlinkingStar from '../sprites/BlinkingStar';
 import Planet from '../sprites/Planet';
+import Player from '../sprites/Player';
 import Control from '../behaviours/Control';
 import PlayerFire from '../behaviours/PlayerFire';
 
@@ -23,10 +24,7 @@ export default class extends Phaser.State {
   create() {
     this.game.stage.backgroundColor = '#222523';
 
-    this.player = new Ship(this.game,
-                           0,
-                           0,
-                           'ship');
+    this.player = new Player(this.game, 0, 0);
 
     this.bg1 = new Phaser.TileSprite(this.game,
                                      0 - (this.game.world.centerX / 2),
@@ -69,23 +67,19 @@ export default class extends Phaser.State {
     ships.add(this.player);
 
     //  An explosion pool
-    const explosions = this.game.add.group();
-    explosions.createMultiple(10, 'explosion');
-    explosions.forEach((explosion) => {
+    this.game.explosionsGroup = this.game.add.group();
+    this.game.explosionsGroup.createMultiple(10, 'explosion');
+    this.game.explosionsGroup.forEach((explosion) => {
       explosion.anchor.setTo(0.5);
       explosion.animations.add('explode');
     });
 
-    this.enemies = this.game.add.group();
-    this.enemy = new Enemy(this.game,
-                           3500,
-                           this.game.world.centerY,
-                           'baddie',
-                           this.player,
-                           explosions);
-    this.enemies.add(this.enemy);
-
-    this.player.addBehaviour(new PlayerFire(this.game, this.player, this.enemies));
+    this.game.enemiesGroup = this.game.add.group();
+    const enemy = new Enemy(this.game,
+                            3500,
+                            this.game.world.centerY,
+                            this.player);
+    this.game.enemiesGroup.add(enemy);
 
     const blinkingStars = this.game.add.group();
     for (let i = 0; i < MAX_BLINKING_STARS; i += 1) {
