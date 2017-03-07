@@ -8,7 +8,6 @@ import BlinkingStar from '../sprites/BlinkingStar';
 import Planet from '../sprites/Planet';
 import Player from '../sprites/Player';
 import Control from '../behaviours/Control';
-import PlayerFire from '../behaviours/PlayerFire';
 
 const MAX_BLINKING_STARS = 40;
 const BG_SIZE = 1920;
@@ -90,6 +89,16 @@ export default class extends Phaser.State {
       });
     instructions.fixedToCamera = true;
     instructions.alpha = 0.5;
+
+    this.lives = this.game.add.text(this.game.camera.view.width - 90,
+                                     20,
+                                    `lives: ${this.player.lives}`,
+      {
+        font: '20px Arial',
+        fill: '#00ff00',
+        align: 'left',
+      });
+    this.lives.fixedToCamera = true;
   }
 
   update() {
@@ -97,6 +106,8 @@ export default class extends Phaser.State {
     if (this.game.canUpdate) {
       this.camera.update();
       this.controller.update();
+
+      this.lives.setText(`lives: ${this.player.lives}`);
     }
   }
 
@@ -110,7 +121,6 @@ export default class extends Phaser.State {
 
       this.game.debug.spriteInfo(this.player, 32, 32);
       this.game.debug.text(this.game.time.fps || '--', 2, 14, '#00ff00');
-      this.game.debug.text(`lives: ${this.player.lives}`, this.game.camera.view.width - 90, 20, '#00ff00');
     }
   }
 
