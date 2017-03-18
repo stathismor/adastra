@@ -90,15 +90,15 @@ export default class extends Phaser.State {
     instructions.fixedToCamera = true;
     instructions.alpha = 0.5;
 
-    this.lives = this.game.add.text(this.game.camera.view.width - 90,
+    this.health = this.game.add.text(this.game.camera.view.width - 120,
                                      20,
-                                    `lives: ${this.player.lives}`,
+                                    `health: ${this.player.health}`,
       {
         font: '20px Arial',
         fill: '#00ff00',
         align: 'left',
       });
-    this.lives.fixedToCamera = true;
+    this.health.fixedToCamera = true;
   }
 
   update() {
@@ -107,7 +107,7 @@ export default class extends Phaser.State {
       this.camera.update();
       this.controller.update();
 
-      this.lives.setText(`lives: ${this.player.lives}`);
+      this.health.setText(`health: ${this.player.health}`);
     }
   }
 
