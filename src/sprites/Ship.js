@@ -10,7 +10,7 @@ export default class extends Entity {
     //  Movement component
     this.movement = {
       acceleration: 700,
-      maxVelocity: 500,
+      maxVelocity: 1500,
       angularVelolicy: 300,
       rotationSpeed: 180, // degrees/second
     };

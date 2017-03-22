@@ -16,6 +16,8 @@ export default class extends Behaviour {
     this.cursors = game.input.keyboard.createCursorKeys();
     this.initKeyboard();
     this.thrustDownAt = 0;
+    this.thrustIsDown = false;
+    this.canDash = false;
   }
 
   initKeyboard() {
@@ -36,7 +38,15 @@ export default class extends Behaviour {
     }
 
     if (this.key_thrust.isDown) {
-      if (this.thrustDownAt === 0) {
+      if (!this.thrustIsDown) {
+        this.thrustIsDown = true;
+        if (this.game.time.now - this.thrustDownAt < 500 && this.canDash) {
+          this.game.physics.arcade.accelerationFromRotation(this.owner.rotation,
+                                                        3800,
+                                                        this.owner.body.acceleration);
+          this.owner.body.velocity.setMagnitude(this.owner.movement.maxVelocity);
+        }
+        this.canDash = true;
         this.thrustDownAt = this.game.time.now;
       }
 
@@ -62,7 +72,7 @@ export default class extends Behaviour {
       this.owner.body.velocity.setMagnitude(Math.min(this.owner.movement.maxVelocity,
                                                      this.owner.body.velocity.getMagnitude()));
     } else {
-      this.thrustDownAt = 0;
+      this.thrustIsDown = false;
       this.owner.frame = 0;
       this.owner.body.acceleration.set(0);
 
