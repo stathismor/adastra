@@ -60,11 +60,19 @@ export default class extends Phaser.State {
     });
 
     this.game.enemiesGroup = this.game.add.group();
-    const enemy = new Enemy(this.game,
-                            3500,
-                            this.game.world.centerY,
-                            this.player);
-    this.game.enemiesGroup.add(enemy);
+    const enemy1 = new Enemy(this.game,
+                             3000,
+                             this.game.world.centerY,
+                             this.player);
+    const enemy2 = new Enemy(this.game,
+                             4000,
+                             this.game.world.centerY - 300,
+                             this.player);
+    const enemy3 = new Enemy(this.game,
+                             5000,
+                             this.game.world.centerY + 1800,
+                             this.player);
+    this.game.enemiesGroup.addMultiple([enemy1, enemy2, enemy3]);
 
     const blinkingStars = this.game.add.group();
     for (let i = 0; i < MAX_BLINKING_STARS; i += 1) {

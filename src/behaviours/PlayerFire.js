@@ -5,8 +5,8 @@ import { getRandomPoint } from '../utils';
 import Behaviour from './Behaviour';
 import BulletWeapon from '../weapons/BulletWeapon';
 
-const ENEMY_SPAWN_MIN_DISTANCE = 300;
-const ENEMY_SPAWN_MAX_DISTANCE = 500;
+const ENEMY_SPAWN_MIN_DISTANCE = 500;
+const ENEMY_SPAWN_MAX_DISTANCE = 900;
 
 export default class extends Behaviour {
   constructor(game, owner) {

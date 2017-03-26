@@ -46,6 +46,6 @@ export default class extends Behaviour {
       if (Math.abs(delta) < this.game.math.degToRad(this.owner.movement.rotationSpeed)) {
         this.owner.rotation = targetAngle;
       }
-    }    
+    }
   }
 }
