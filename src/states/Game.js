@@ -8,6 +8,8 @@ import BlinkingStar from '../sprites/BlinkingStar';
 import Planet from '../sprites/Planet';
 import Player from '../sprites/Player';
 import Control from '../behaviours/Control';
+import PlayerFire from '../behaviours/PlayerFire';
+import BulletWeapon from '../weapons/BulletWeapon';
 
 const MAX_BLINKING_STARS = 40;
 const BG_SIZE = 1920;
@@ -49,6 +51,9 @@ export default class extends Phaser.State {
     this.backgrounds.addMultiple([this.bg1, this.bg2]);
 
     const ships = this.game.add.group();
+    // Because of the rendering order, this needs to be added here
+    const weapon = new BulletWeapon(game, this.player, 'blue_bullet').getWeapon();
+    this.player.addBehaviour(new PlayerFire(this.game, this.player, weapon));
     ships.add(this.player);
 
     //  An explosion pool

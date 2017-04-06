@@ -3,15 +3,14 @@ import Phaser from 'phaser';
 import { getRandomPoint } from '../utils';
 
 import Behaviour from './Behaviour';
-import BulletWeapon from '../weapons/BulletWeapon';
 
 const ENEMY_SPAWN_MIN_DISTANCE = 500;
 const ENEMY_SPAWN_MAX_DISTANCE = 900;
 
 export default class extends Behaviour {
-  constructor(game, owner) {
+  constructor(game, owner, weapon) {
     super(game, owner);
-    this.weapon = new BulletWeapon(game, owner, 'blue_bullet').getWeapon();
+    this.weapon = weapon;
 
     this.key_fire_1 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.key_fire_2 = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
