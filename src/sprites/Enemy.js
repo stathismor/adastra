@@ -1,6 +1,7 @@
 import Ship from './Ship';
 import AcceleratedFollow from '../behaviours/AcceleratedFollow';
 import EnemyFire from '../behaviours/EnemyFire';
+import Marker from '../behaviours/Marker';
 
 export default class extends Ship {
 
@@ -19,5 +20,6 @@ export default class extends Ship {
 
     this.addBehaviour(new AcceleratedFollow(this.game, this, target));
     this.addBehaviour(new EnemyFire(this.game, this, target));
+    this.addBehaviour(new Marker(this.game, this, target));
   }
 }

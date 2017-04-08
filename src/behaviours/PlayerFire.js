@@ -1,11 +1,12 @@
 import Phaser from 'phaser';
 
-import { getRandomPoint } from '../utils';
+import { getRandomPointInDirection } from '../utils';
 
 import Behaviour from './Behaviour';
 
 const ENEMY_SPAWN_MIN_DISTANCE = 500;
 const ENEMY_SPAWN_MAX_DISTANCE = 900;
+const SPAWN_ANGLE_OFFSET = 0.6;
 
 export default class extends Behaviour {
   constructor(game, owner, weapon) {
@@ -36,8 +37,10 @@ export default class extends Behaviour {
     // @TODO: Need to do this with a pool of enemies
     e.kill();
     e.revive();
-    const randomPoint = getRandomPoint(this.game, this.owner.x, this.owner.y,
-                                       ENEMY_SPAWN_MIN_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE);
+
+    const randomPoint = getRandomPointInDirection(this.game, this.owner.x, this.owner.y,
+                                                  ENEMY_SPAWN_MIN_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE,
+                                                  this.owner.body.angle, SPAWN_ANGLE_OFFSET);
     e.x = randomPoint.x;
     e.y = randomPoint.y;
   }
