@@ -14,10 +14,12 @@ export default class extends Phaser.Sprite {
   }
 
   update() {
-    this.behaviours.forEach((behaviour) => {
-      behaviour.update();
-    });
-    super.update();
+    if (this.exists) {
+      this.behaviours.forEach((behaviour) => {
+        behaviour.update();
+      });
+      super.update();
+    }
   }
 
   addBehaviour(behaviour) {

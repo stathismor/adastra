@@ -12,6 +12,7 @@ import PlayerFire from '../behaviours/PlayerFire';
 import BulletWeapon from '../weapons/BulletWeapon';
 
 const MAX_BLINKING_STARS = 40;
+const MAX_ENEMIES = 10;
 const BG_SIZE = 1920;
 
 export default class extends Phaser.State {
@@ -37,7 +38,6 @@ export default class extends Phaser.State {
                                      BG_SIZE, BG_SIZE,
                                      'stars_front');
 
-    this.createInstructions();
     this.camera = new Camera(this.game, this.player, [this.bg1, this.bg2]);
 
     const planets = this.game.add.group();
@@ -65,19 +65,22 @@ export default class extends Phaser.State {
     });
 
     this.game.enemiesGroup = this.game.add.group();
-    const enemy1 = new Enemy(this.game,
-                             3000,
-                             this.game.world.centerY,
-                             this.player);
-    const enemy2 = new Enemy(this.game,
-                             4000,
-                             this.game.world.centerY - 300,
-                             this.player);
-    const enemy3 = new Enemy(this.game,
-                             5000,
-                             this.game.world.centerY + 1800,
-                             this.player);
-    this.game.enemiesGroup.addMultiple([enemy1, enemy2, enemy3]);
+    for (let i = 0; i < MAX_ENEMIES; i += 1) {
+      const enemy = new Enemy(this.game,
+                              0,
+                              0,
+                              this.player);
+
+      // NOTE: Do not kill() here, because onKilled() is triggered, and explosion is rendered.
+      enemy.exists = false;
+      this.game.enemiesGroup.add(enemy);
+    }
+    let enemy = this.game.enemiesGroup.getFirstExists(false, false, 4000, this.game.world.centerY - 300);
+    enemy.revive();
+    enemy = this.game.enemiesGroup.getFirstExists(false, false, 5000, this.game.world.centerY + 1800);
+    enemy.revive();
+    enemy = this.game.enemiesGroup.getFirstExists(false, false, 3000, this.game.world.centerY);
+    enemy.revive();
 
     const blinkingStars = this.game.add.group();
     for (let i = 0; i < MAX_BLINKING_STARS; i += 1) {
@@ -85,12 +88,14 @@ export default class extends Phaser.State {
       blinkingStars.add(star);
     }
 
+    this.addHUD();
+
     this.controller = new Control(this.game, this.player);
 
     this.intro();
   }
 
-  createInstructions() {
+  addHUD() {
     // Add some fixed instructions about how to play the game
     const instructions = this.game.add.text(10,
                                             this.game.world.height - 60,
