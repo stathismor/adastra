@@ -9,21 +9,24 @@ export default class extends Phaser.Sprite {
     this.events.onDestroy.addOnce(this.removeAllBehaviours, this);
   }
 
-  removeAllBehaviours() {
-    this.behaviours = [];
-  }
-
   update() {
-    if (this.exists) {
-      this.behaviours.forEach((behaviour) => {
+    // NOTE: Maybe I can optimise this
+    this.behaviours.forEach((behaviour) => {
+      if (this.alive || behaviour.persists) {
         behaviour.update();
-      });
+      }
+    });
+    if (this.alive) {
       super.update();
     }
   }
 
   addBehaviour(behaviour) {
     this.behaviours.push(behaviour);
+  }
+
+  removeAllBehaviours() {
+    this.behaviours = [];
   }
 
   removeBehaviour(behaviour) {

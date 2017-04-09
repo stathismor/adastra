@@ -3,22 +3,21 @@ import Phaser from 'phaser';
 
 import Camera from '../camera/Camera';
 import Ship from '../sprites/Ship';
-import Enemy from '../sprites/Enemy';
 import BlinkingStar from '../sprites/BlinkingStar';
 import Planet from '../sprites/Planet';
 import Player from '../sprites/Player';
 import Control from '../behaviours/Control';
 import PlayerFire from '../behaviours/PlayerFire';
 import BulletWeapon from '../weapons/BulletWeapon';
+import WaveManager from '../waves/WaveManager';
 
 const MAX_BLINKING_STARS = 40;
-const MAX_ENEMIES = 10;
 const BG_SIZE = 1920;
 
 export default class extends Phaser.State {
   init() {}
   preload() {
-    this.game.canUpdate = false;
+    this.game.canUpdate = true;
     this.game.time.advancedTiming = true;
   }
 
@@ -64,35 +63,19 @@ export default class extends Phaser.State {
       explosion.animations.add('explode');
     });
 
-    this.game.enemiesGroup = this.game.add.group();
-    for (let i = 0; i < MAX_ENEMIES; i += 1) {
-      const enemy = new Enemy(this.game,
-                              0,
-                              0,
-                              this.player);
-
-      // NOTE: Do not kill() here, because onKilled() is triggered, and explosion is rendered.
-      enemy.exists = false;
-      this.game.enemiesGroup.add(enemy);
-    }
-    let enemy = this.game.enemiesGroup.getFirstExists(false, false, 4000, this.game.world.centerY - 300);
-    enemy.revive();
-    enemy = this.game.enemiesGroup.getFirstExists(false, false, 5000, this.game.world.centerY + 1800);
-    enemy.revive();
-    enemy = this.game.enemiesGroup.getFirstExists(false, false, 3000, this.game.world.centerY);
-    enemy.revive();
-
     const blinkingStars = this.game.add.group();
     for (let i = 0; i < MAX_BLINKING_STARS; i += 1) {
       const star = new BlinkingStar(this.game, this.player, this.camera);
       blinkingStars.add(star);
     }
 
+    const waveManager = new WaveManager(this.game, this.player);
+
     this.addHUD();
 
     this.controller = new Control(this.game, this.player);
 
-    this.intro();
+    // this.intro();
   }
 
   addHUD() {
