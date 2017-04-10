@@ -13,6 +13,7 @@ export default class extends Behaviour {
     this.target = target;
     this.bullets = bullets;
     this.regenerationTween = new Tweenable();
+    this.persists = true; // @TODO: WIll need to investigate the performance impact of this
   }
 
   update() {

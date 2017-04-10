@@ -17,7 +17,7 @@ const BG_SIZE = 1920;
 export default class extends Phaser.State {
   init() {}
   preload() {
-    this.game.canUpdate = true;
+    this.game.canUpdate = false;
     this.game.time.advancedTiming = true;
   }
 
@@ -75,7 +75,7 @@ export default class extends Phaser.State {
 
     this.controller = new Control(this.game, this.player);
 
-    // this.intro();
+    this.intro();
   }
 
   addHUD() {

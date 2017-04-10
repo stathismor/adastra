@@ -14,7 +14,7 @@ export default class extends Behaviour {
     this.marker.visible = false;
     this.game.add.existing(this.marker);
 
-    owner.events.onKilled.addOnce(() => { console.log(this.marker.visible); this.marker.visible = false; }, this);
+    owner.events.onKilled.add(() => { this.marker.visible = false; }, this);
   }
 
   update() {
@@ -50,9 +50,7 @@ export default class extends Behaviour {
 
     // TODO: This visible check seems a bit hacky. The bug was that if an enemy is killed off the
     // screen, the marker still remains.
-    console.log('here?');
-    if (intersects && this.owner.visible) {
-      console.log('here???');
+    if (intersects) {
       this.marker.x = this.intersectionResult.x;
       this.marker.y = this.intersectionResult.y;
       this.marker.visible = true;

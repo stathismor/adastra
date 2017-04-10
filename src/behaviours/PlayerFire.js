@@ -6,7 +6,6 @@ export default class extends Behaviour {
   constructor(game, owner, weapon) {
     super(game, owner);
     this.weapon = weapon;
-    this.persists = true;
 
     this.key_fire_1 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.key_fire_2 = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
