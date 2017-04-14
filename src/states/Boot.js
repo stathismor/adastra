@@ -9,6 +9,13 @@ export default class extends Phaser.State {
   }
 
   preload() {
+    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.scale.windowConstraints.bottom = 'visual';
+    this.scale.parentIsWindow = true;
+    this.scale.setShowAll();
+    this.scale.maxWidth = this.game.width;
+    this.scale.maxHeight = this.game.height;
+
     WebFont.load({
       google: {
         families: ['Bangers'],

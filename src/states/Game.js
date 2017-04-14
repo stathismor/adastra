@@ -3,16 +3,16 @@ import Phaser from 'phaser';
 
 import Camera from '../camera/Camera';
 import Ship from '../sprites/Ship';
-import Enemy from '../sprites/Enemy';
 import BlinkingStar from '../sprites/BlinkingStar';
 import Planet from '../sprites/Planet';
 import Player from '../sprites/Player';
 import Control from '../behaviours/Control';
 import PlayerFire from '../behaviours/PlayerFire';
 import BulletWeapon from '../weapons/BulletWeapon';
+import WaveManager from '../waves/WaveManager';
+import Hud from '../hud/Hud';
 
 const MAX_BLINKING_STARS = 40;
-const MAX_ENEMIES = 10;
 const BG_SIZE = 1920;
 
 export default class extends Phaser.State {
@@ -52,7 +52,7 @@ export default class extends Phaser.State {
 
     const ships = this.game.add.group();
     // Because of the rendering order, this needs to be added here
-    const weapon = new BulletWeapon(game, this.player, 'blue_bullet').getWeapon();
+    const weapon = new BulletWeapon(this.game, this.player, 'blue_bullet').getWeapon();
     this.player.addBehaviour(new PlayerFire(this.game, this.player, weapon));
     ships.add(this.player);
 
@@ -64,59 +64,18 @@ export default class extends Phaser.State {
       explosion.animations.add('explode');
     });
 
-    this.game.enemiesGroup = this.game.add.group();
-    for (let i = 0; i < MAX_ENEMIES; i += 1) {
-      const enemy = new Enemy(this.game,
-                              0,
-                              0,
-                              this.player);
-
-      // NOTE: Do not kill() here, because onKilled() is triggered, and explosion is rendered.
-      enemy.exists = false;
-      this.game.enemiesGroup.add(enemy);
-    }
-    let enemy = this.game.enemiesGroup.getFirstExists(false, false, 4000, this.game.world.centerY - 300);
-    enemy.revive();
-    enemy = this.game.enemiesGroup.getFirstExists(false, false, 5000, this.game.world.centerY + 1800);
-    enemy.revive();
-    enemy = this.game.enemiesGroup.getFirstExists(false, false, 3000, this.game.world.centerY);
-    enemy.revive();
-
     const blinkingStars = this.game.add.group();
     for (let i = 0; i < MAX_BLINKING_STARS; i += 1) {
       const star = new BlinkingStar(this.game, this.player, this.camera);
       blinkingStars.add(star);
     }
 
-    this.addHUD();
+    const waveManager = new WaveManager(this.game, this.player);
+    this.hud = new Hud(this.game, this.player);
 
     this.controller = new Control(this.game, this.player);
 
     this.intro();
-  }
-
-  addHUD() {
-    // Add some fixed instructions about how to play the game
-    const instructions = this.game.add.text(10,
-                                            this.game.world.height - 60,
-                                            'Arrow keys to move\nZ key to shoot',
-      {
-        font: '16px Arial',
-        fill: '#e5d7db',
-        align: 'left',
-      });
-    instructions.fixedToCamera = true;
-    instructions.alpha = 0.5;
-
-    this.health = this.game.add.text(this.game.camera.view.width - 120,
-                                     20,
-                                    `health: ${this.player.health}`,
-      {
-        font: '20px Arial',
-        fill: '#00ff00',
-        align: 'left',
-      });
-    this.health.fixedToCamera = true;
   }
 
   update() {
@@ -124,8 +83,7 @@ export default class extends Phaser.State {
     if (this.game.canUpdate) {
       this.camera.update();
       this.controller.update();
-
-      this.health.setText(`health: ${this.player.health}`);
+      this.hud.update();
     }
   }
 
@@ -147,7 +105,6 @@ export default class extends Phaser.State {
     this.game.camera.focusOnXY(0, 0);
 
     const startY = this.game.world.height * 0.4;
-    const endY = this.game.world.height * 0.4;
     const mothership = new Ship(this.game, -10, startY, 'mothership');
     this.game.add.existing(mothership);
 

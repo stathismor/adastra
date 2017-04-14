@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
-const WORLD_LENGTH_RATIO = 1.7;
+const WORLD_LENGTH_RATIO_WIDTH = 1.7;
+const WORLD_LENGTH_RATIO_HEIGHT = 1.35;
 const CAMERA_LERP = 0.05;
 const CAMERA_DISTANCE_RATE = 100;
 const CAMERA_DISTANCE_FIXED = 50;
@@ -27,10 +28,11 @@ export default class {
     // Init camera. Extra bounds are needed for follow interpolation to work.
     this.initWidth = game.world.width;
     this.initHeight = game.world.height;
+    this.aspectRatio = this.initWidth / this.initHeight;
     this.game.world.setBounds(this.player.body.x - (this.initWidth / 2),
                               this.player.body.y - (this.initHeight / 2),
-                              this.initWidth * WORLD_LENGTH_RATIO,
-                              this.initHeight * WORLD_LENGTH_RATIO);
+                              this.initWidth * WORLD_LENGTH_RATIO_WIDTH,
+                              this.initHeight * WORLD_LENGTH_RATIO_HEIGHT);
     backgrounds.forEach((background) => {
       const bg = background;
       bg.fixedToCamera = true;
@@ -41,7 +43,7 @@ export default class {
     this.oldPos.set(this.cameraPos.x, this.cameraPos.y);
 
     this.setBounds();
-    // Camera is facing the direction of the player. Move it by a standard distance, increase
+    // Camera is facing the direction of the player. Move it by a fixed distance, increase
     // the distance when speeding (so as to leave more view space in front). Finally,
     // interpolate to the new position.
     let distanceX = CAMERA_DISTANCE_FIXED +
