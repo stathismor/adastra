@@ -2,14 +2,26 @@ import Phaser from 'phaser';
 
 import { getRandomPointInDirection } from '../utils';
 
-import Enemy from '../sprites/Enemy';
+import Enemy1 from '../sprites/enemy/Enemy1';
+import Enemy2 from '../sprites/enemy/Enemy2';
 
-const MAX_ENEMIES = 30;
 const SPAWNED_ENEMIES_NUMBER = 5;
 const ENEMY_SPAWN_MIN_DISTANCE = 500;
 const ENEMY_SPAWN_MAX_DISTANCE = 900;
 const SPAWN_ANGLE_OFFSET = 0.5;
 const SPAWN_SECONDS = 5;
+
+const enemies = [
+  {
+    class: Enemy1,
+    size: 30,
+  },
+  {
+    class: Enemy2,
+    size: 30,
+  },
+];
+
 
 export default class {
 
@@ -35,8 +47,8 @@ export default class {
       });
     this.waveText.fixedToCamera = true;
 
-    for (let i = 0; i < MAX_ENEMIES; i += 1) {
-      const enemy = new Enemy(this.game,
+    for (let i = 0; i < enemies[0].size; i += 1) {
+      const enemy = new Enemy1(this.game,
                               0,
                               0,
                               this.player);

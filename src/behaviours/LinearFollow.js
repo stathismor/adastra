@@ -4,15 +4,11 @@ import Follow from './Follow';
 
 export default class extends Follow {
 
-  constructor(game, owner, target) {
-    super(game, owner);
-    this.target = target;
-  }
-
   update() {
-    super.update();
+    const targetAngle = this.getTargetAngle();
+    this.rotate(targetAngle);
 
-    // Calculate velocity vector based on this.rotation and this.SPEED
+    // Calculate velocity vector based on rotation and max velocity
     this.owner.body.velocity.x = Math.cos(this.owner.rotation) * this.owner.movement.maxVelocity;
     this.owner.body.velocity.y = Math.sin(this.owner.rotation) * this.owner.movement.maxVelocity;
   }

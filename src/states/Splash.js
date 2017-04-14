@@ -17,11 +17,11 @@ export default class extends Phaser.State {
     this.game.load.spritesheet('ship', 'assets/images/ship.png', 64, 64);
     this.load.image('blue_bullet', 'assets/images/blue_bullet.png');
     this.load.image('red_bullet', 'assets/images/red_bullet.png');
-    this.load.image('enemy', 'assets/images/enemy.png');
+    this.load.image('enemy1', 'assets/images/enemy1.png');
+    this.load.image('enemy2', 'assets/images/enemy2.png');
     this.load.image('stars_back', 'assets/images/stars_back.png');
     this.load.image('stars_front', 'assets/images/stars_front.png');
     this.load.image('blinking_star', 'assets/images/blinking_star.png');
-    this.load.image('baddie', 'assets/images/baddie.png');
     this.load.image('smoke', 'assets/images/smoke.png');
     this.load.image('planet', 'assets/images/planet.png');
     this.load.image('moon', 'assets/images/moon.png');
