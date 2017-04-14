@@ -12,7 +12,7 @@ export default class extends Entity {
       acceleration: 700,
       maxVelocity: 500,
       angularVelolicy: 300,
-      rotationSpeed: 180, // degrees/second
+      rotationSpeed: 230, // degrees/second
     };
 
     game.physics.enable(this);
