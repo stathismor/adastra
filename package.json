@@ -33,7 +33,7 @@
   "_comment": "p2, phaser and pixi are here just to please eslint. Probably webpack alias and eslint don't like each other.",
   "dependencies": {
     "express": "^4.14.1",
-    "phaser-ce": "^2.7.3",
+    "phaser-ce": "^2.7.6",
     "shifty": "^1.5.4",
     "webfontloader": "^1.6.27"
   }
