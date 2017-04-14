@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import Behaviour from './Behaviour';
 
+const ANGLE_DIFF = 0.0015;
+
 export default class extends Behaviour {
 
   constructor(game, owner, target) {
@@ -20,7 +22,8 @@ export default class extends Behaviour {
                                                     this.owner.y,
                                                     this.target.x,
                                                     this.target.y);
-    if (this.owner !== targetAngle) {
+
+    if (Phaser.Math.difference(this.owner.rotation, targetAngle) > ANGLE_DIFF) {
       // Calculate difference between the current angle and targetAngle. Keep it in range from
       // -180 to 180 to make the most efficient turns.
       // const delta = Phaser.Math.wrapAngle(targetAngle - this.owner.rotation);
