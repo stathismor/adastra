@@ -1,12 +1,6 @@
 import Phaser from 'phaser';
 
-import { getRandomPointInDirection } from '../utils';
-
 import Behaviour from './Behaviour';
-
-const ENEMY_SPAWN_MIN_DISTANCE = 500;
-const ENEMY_SPAWN_MAX_DISTANCE = 900;
-const SPAWN_ANGLE_OFFSET = 0.6;
 
 export default class extends Behaviour {
   constructor(game, owner, weapon) {
@@ -22,26 +16,20 @@ export default class extends Behaviour {
       this.weapon.fire();
     }
 
-    this.game.physics.arcade.collide(this.game.enemiesGroup,
+    this.game.physics.arcade.overlap(this.game.enemiesGroup,
                                      this.weapon.bullets,
                                      this.collisionHandler,
                                      null,
-                                     { game: this.game, owner: this.owner });
+                                     { game: this.game, owner: this.owner, weapon: this.weapon });
   }
 
   collisionHandler(enemy, bullet) {
-    bullet.kill();
-    // Respawn on a random position
-    const e = enemy;
+    // TODO: Can I avoid even doing the check when off camera?
+    if (enemy.inCamera && bullet.inCamera) {
+      bullet.kill();
 
-    // @TODO: Need to do this with a pool of enemies
-    e.kill();
-    e.revive();
-
-    const randomPoint = getRandomPointInDirection(this.game, this.owner.x, this.owner.y,
-                                                  ENEMY_SPAWN_MIN_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE,
-                                                  this.owner.body.angle, SPAWN_ANGLE_OFFSET);
-    e.x = randomPoint.x;
-    e.y = randomPoint.y;
+      const e = enemy;
+      e.damage(this.weapon.damage);
+    }
   }
 }

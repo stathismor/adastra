@@ -11,8 +11,12 @@ export default class {
     this.weapon.fireAngle = owner.angle;
     this.weapon.trackRotation = true;
     this.weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
-    this.weapon.bulletLifespan = 2200;  // in msecs
+    this.weapon.bulletLifespan = 3000;  // in msecs
     this.weapon.trackOffset.x = owner.width * 0.6;
+
+    // Custom properties
+    this.weapon.damage = 20;
+
     if (properties) {
       this.weapon = Object.assign(this.weapon, properties);
     }

@@ -12,6 +12,9 @@ export default class extends Ship {
     this.movement.rotationSpeed = 2; // degrees/second
     this.movement.acceleration = 200;
 
+    this.health = 40;
+    this.maxHealth = 40;
+
     this.events.onKilled.add(() => {
       const explosion = this.game.explosionsGroup.getFirstExists(false);
       explosion.reset(this.x, this.y);

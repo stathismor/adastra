@@ -12,10 +12,10 @@ export default class extends Behaviour {
     this.target = target;
     this.weapon = new BulletWeapon(game, owner, 'red_bullet',
       { fireRate: 1000,
-        bulletSpeed: 300,
+        bulletSpeed: 500,
       }).getWeapon();
     // @TODO: Not sure this is the right place for it
-    owner.addBehaviour(new PlayerHit(this.game, owner, target, this.weapon.bullets));
+    owner.addBehaviour(new PlayerHit(this.game, owner, target, this.weapon));
   }
 
   update() {
