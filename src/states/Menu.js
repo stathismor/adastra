@@ -25,10 +25,11 @@ export default class extends Phaser.State {
       i.fill = DESELECT_COLOUR;
     }, this);
 
-    // When press
-    this.input.keyboard.onPressCallback = () => {
+    // When press any key, start the game
+    // TODO: Does not really work with all keys on Chrome
+    this.game.input.keyboard.onPressCallback = () => {
+      this.game.input.keyboard.onPressCallback = null; // Reset this back to null
       this.state.start('Game');
-      this.input.keyboard.onPressCallback = null; // Reset this to null
     };
   }
 }
