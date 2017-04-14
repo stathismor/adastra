@@ -7,7 +7,7 @@ const IMMOBILISE_LERP = 0.007;
 const STOP_OFFSET = 1.5;
 const MAX_THRUST_DELAY = 1550;
 const MAX_THRUST_RATE = 0.95;
-const ROTATION_THRUST_FRICTION = 0.55;
+const ROTATION_THRUST_FRICTION = 0.45;
 
 export default class extends Behaviour {
 
@@ -30,7 +30,7 @@ export default class extends Behaviour {
     // Move
     if (this.key_left.isDown || this.key_right.isDown) {
       let rotationSpeed = this.owner.movement.rotationSpeed;
-      if (this.key_thrust.isDown) {
+      if (this.key_thrust.isDown || this.key_reverse.isDown) {
         rotationSpeed *= ROTATION_THRUST_FRICTION;
       }
       if (this.key_left.isDown) {
