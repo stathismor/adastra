@@ -30,6 +30,10 @@ export default class extends Behaviour {
 
       const e = enemy;
       e.damage(this.weapon.damage);
+
+      if (!e.alive) {
+        this.owner.points += e.points;
+      }
     }
   }
 }

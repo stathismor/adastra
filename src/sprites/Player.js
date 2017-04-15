@@ -10,6 +10,8 @@ export default class extends Ship {
     this.health = 100;
     this.maxHealth = 100;
 
+    this.points = 0;
+
     this.events.onKilled.add(() => {
       // This is needed otherwise background can be rendered out of place
       // http://www.html5gamedevs.com/topic/3359-camera-not-positioned-correctly-after-changing-start-away-from-scrolling/

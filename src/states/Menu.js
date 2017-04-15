@@ -15,7 +15,10 @@ export default class extends Phaser.State {
                                { font: '48px Arial', fill: DESELECT_COLOUR, align: 'center' });
     text.inputEnabled = true;
     text.anchor.setTo(0.5, 0.5);
-    text.events.onInputDown.add(() => this.state.start('Game'), this);
+    text.events.onInputDown.add(() => {
+      this.state.start('Game');
+      this.game.input.keyboard.onPressCallback = null;
+    }, this);
     text.events.onInputOver.add((item) => {
       const i = item;
       i.fill = SELECT_COLOUR;

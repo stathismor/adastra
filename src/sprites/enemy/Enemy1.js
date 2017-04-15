@@ -11,8 +11,10 @@ export default class extends Enemy {
     this.movement.rotationSpeed = 1; // degrees/second
     this.movement.acceleration = 300;
 
-    this.health = 40;
-    this.maxHealth = 40;
+    this.health = 60;
+    this.maxHealth = 60;
+
+    this.points = 20;
 
     this.addBehaviour(new LinearFollow(this.game, this, target));
     this.addBehaviour(new EnemyFire(this.game, this, target));

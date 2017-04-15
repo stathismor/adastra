@@ -14,6 +14,8 @@ export default class extends Enemy {
     this.health = 40;
     this.maxHealth = 40;
 
+    this.points = 30;
+
     this.addBehaviour(new AcceleratedFollow(this.game, this, target));
     this.addBehaviour(new EnemyFire(this.game, this, target));
   }
