@@ -5,23 +5,22 @@ import { getRandomPointInDirection } from '../utils';
 import Enemy1 from '../sprites/enemy/Enemy1';
 import Enemy2 from '../sprites/enemy/Enemy2';
 
-const SPAWNED_ENEMIES_NUMBER = 5;
-const ENEMY_SPAWN_MIN_DISTANCE = 500;
-const ENEMY_SPAWN_MAX_DISTANCE = 900;
+const SPAWN_MIN_DISTANCE = 500;
+const SPAWN_MAX_DISTANCE = 900;
 const SPAWN_ANGLE_OFFSET = 0.5;
-const SPAWN_SECONDS = 5;
+const SPAWN_MIN_TIME = 0.5; // in secs
+const SPAWN_MAX_TIME = 4;
 
-const enemies = [
+const enemyGroups = [
   {
-    class: Enemy1,
+    Class: Enemy1,
     size: 30,
   },
   {
-    class: Enemy2,
+    Class: Enemy2,
     size: 30,
   },
 ];
-
 
 export default class {
 
@@ -31,67 +30,72 @@ export default class {
     this.game.enemiesGroup = this.game.add.group();
     this.secondsCount = 0;
     this.previousSeconds = 0;
+    this.queuedEnemies = 0;
 
     this.timer = game.time.create(false);
-    //  Set a TimerEvent to occur every 1 second
-    this.timer.loop(Phaser.Timer.SECOND, this.createWave, this);
-    this.timer.start();
+    this.timer.loop(Phaser.Timer.SECOND, this.process, this);
+    this.timer.start(Phaser.Timer.SECOND * 4);
 
-    this.waveText = this.game.add.text((game.camera.view.width / 2) - 60,
-                                       20,
-                                       `Next wave in ${SPAWN_SECONDS}`,
-      {
-        font: '20px Arial',
-        fill: '#00ff00',
-        align: 'left',
-      });
-    this.waveText.fixedToCamera = true;
+    enemyGroups.every((enemyGroup) => {
+      const group = this.game.add.group();
+      for (let i = 0; i < enemyGroup.size; i += 1) {
+        const enemy = new enemyGroup.Class(this.game, 0, 0, this.player);
 
-    for (let i = 0; i < enemies[0].size; i += 1) {
-      const enemy = new Enemy1(this.game,
-                              0,
-                              0,
-                              this.player);
-
-      // NOTE: Do not kill() here, because onKilled() is triggered, and explosion is rendered.
-      enemy.exists = false;
-      enemy.alive = false;
-      this.game.enemiesGroup.add(enemy);
-    }
-  }
-
-  updateWaveText() {
-    const newSeconds = SPAWN_SECONDS - this.secondsCount;
-    if (newSeconds !== this.previousSeconds) {
-      this.waveText.setText(`Next wave in ${newSeconds}`);
-      this.previousSeconds = newSeconds;
-    }
-
-    this.secondsCount += 1;
-    if (this.secondsCount > SPAWN_SECONDS) {
-      this.secondsCount = 0;
-    }
-  }
-
-
-  createWave() {
-    this.updateWaveText();
-
-    if (this.secondsCount === 0) {
-      for (let i = 0; i < SPAWNED_ENEMIES_NUMBER; i += 1) {
-        const randomPoint = getRandomPointInDirection(this.game,
-                                                      this.player.x,
-                                                      this.player.y,
-                                                      ENEMY_SPAWN_MIN_DISTANCE,
-                                                      ENEMY_SPAWN_MAX_DISTANCE,
-                                                      this.player.body.angle,
-                                                      SPAWN_ANGLE_OFFSET);
-
-        const enemy = this.game.enemiesGroup.getFirstDead(false, randomPoint.x, randomPoint.y);
-        if (enemy) {
-          enemy.revive();
-        }
+        // NOTE: Do not kill() here, because onKilled() is triggered, and explosion is rendered.
+        enemy.exists = false;
+        enemy.alive = false;
+        group.add(enemy);
       }
+      this.game.enemiesGroup.add(group);
+      return true;
+    });
+
+    this.game.time.events.add(Phaser.Timer.SECOND * 6, () => this.spawnEnemies(2, 0), this);
+  }
+
+  process() {
+    // @TODO: Obviously make this nicer
+    const index = this.player.points < 100 ? 0 : 1;
+    const estimatedEnemiesCount = Math.floor(this.spawnFn(this.player.points));
+    const currentEnemiesCount = this.game.enemiesGroup.getChildAt(index).countLiving() +
+                                this.queuedEnemies;
+    const newEnemiesCount = estimatedEnemiesCount - currentEnemiesCount;
+    this.spawnEnemies(newEnemiesCount, index);
+  }
+
+  spawnFn(points) {
+    // @TODO: Obviously make this nicer
+    const factor = this.player.points < 100 ? 0.1 : 0.02;
+    return points * factor;
+  }
+
+  spawnEnemies(count, index) {
+    for (let i = 0; i < count && count > 0; i += 1) {
+      this.queuedEnemies += 1;
+      this.game.time.events.add(Phaser.Math.random(Phaser.Timer.SECOND * SPAWN_MIN_TIME,
+                                                   Phaser.Timer.SECOND * SPAWN_MAX_TIME),
+                                                   this.spawnEnemy,
+        {
+          wave: this, index,
+        });
+    }
+  }
+
+  spawnEnemy() {
+    const randomPoint = getRandomPointInDirection(this.wave.game,
+                                                  this.wave.player.x,
+                                                  this.wave.player.y,
+                                                  SPAWN_MIN_DISTANCE,
+                                                  SPAWN_MAX_DISTANCE,
+                                                  this.wave.player.body.angle,
+                                                  SPAWN_ANGLE_OFFSET);
+
+    const enemy = this.wave.game.enemiesGroup.getChildAt(this.index).getFirstDead(false,
+                                                                                  randomPoint.x,
+                                                                                  randomPoint.y);
+    if (enemy) {
+      this.wave.queuedEnemies -= 1;
+      enemy.revive();
     }
   }
 }

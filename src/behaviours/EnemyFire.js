@@ -7,13 +7,10 @@ import BulletWeapon from '../weapons/BulletWeapon';
 const RAY_DISTANCE = 600;
 
 export default class extends Behaviour {
-  constructor(game, owner, target) {
+  constructor(game, owner, target, weaponProps) {
     super(game, owner);
     this.target = target;
-    this.weapon = new BulletWeapon(game, owner, 'red_bullet',
-      { fireRate: 1000,
-        bulletSpeed: 500,
-      }).getWeapon();
+    this.weapon = new BulletWeapon(game, owner, 'red_bullet', weaponProps).getWeapon();
     // @TODO: Not sure this is the right place for it
     owner.addBehaviour(new PlayerHit(this.game, owner, target, this.weapon));
   }

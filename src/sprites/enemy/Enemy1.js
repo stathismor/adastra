@@ -1,5 +1,5 @@
 import Enemy from './Enemy';
-import LinearFollow from '../../behaviours/LinearFollow';
+import AcceleratedFollow from '../../behaviours/AcceleratedFollow';
 import EnemyFire from '../../behaviours/EnemyFire';
 
 export default class extends Enemy {
@@ -7,16 +7,20 @@ export default class extends Enemy {
   constructor(game, x, y, target) {
     super(game, x, y, target, 'enemy1');
 
-    this.movement.maxVelocity = 450;
-    this.movement.rotationSpeed = 1; // degrees/second
-    this.movement.acceleration = 300;
+    this.movement.maxVelocity = 200;
+    this.movement.rotationSpeed = 2; // degrees/second
+    this.movement.acceleration = 200;
 
-    this.health = 60;
-    this.maxHealth = 60;
+    this.health = 40;
+    this.maxHealth = 40;
 
     this.points = 20;
 
-    this.addBehaviour(new LinearFollow(this.game, this, target));
-    this.addBehaviour(new EnemyFire(this.game, this, target));
+    this.addBehaviour(new AcceleratedFollow(this.game, this, target));
+    this.addBehaviour(new EnemyFire(this.game, this, target,
+      {
+        fireRate: 800,
+        bulletSpeed: 300,
+      }));
   }
 }
