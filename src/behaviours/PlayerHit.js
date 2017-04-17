@@ -13,6 +13,7 @@ export default class extends Behaviour {
     this.target = target;
     this.weapon = weapon;
     this.regenerationTween = new Tweenable();
+    this.persists = true;
   }
 
   update() {
@@ -37,7 +38,7 @@ export default class extends Behaviour {
     const t = target;
 
     // If target is dead, the onKilled will be fired.
-    t.damage(this.weapon.damage); // TODO: Need to get the actual damage here
+    t.damage(bullet.data.damage);
 
     this.tweenable = new Tweenable().tween({
       from: { health: t.health },

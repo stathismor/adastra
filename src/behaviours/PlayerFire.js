@@ -29,7 +29,7 @@ export default class extends Behaviour {
       bullet.kill();
 
       const e = enemy;
-      e.damage(this.weapon.damage);
+      e.damage(bullet.data.damage);
 
       if (!e.alive) {
         this.owner.points += e.points;
