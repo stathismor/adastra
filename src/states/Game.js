@@ -8,7 +8,7 @@ import Planet from '../sprites/Planet';
 import Player from '../sprites/Player';
 import Control from '../behaviours/Control';
 import PlayerFire from '../behaviours/PlayerFire';
-import BulletWeapon from '../weapons/BulletWeapon';
+import LaserBulletWeapon from '../weapons/LaserBulletWeapon';
 import WaveManager from '../waves/WaveManager';
 import Hud from '../hud/Hud';
 
@@ -52,7 +52,7 @@ export default class extends Phaser.State {
 
     const ships = this.game.add.group();
     // Because of the rendering order, this needs to be added here
-    const weapon = new BulletWeapon(this.game, this.player, 'blue_bullet').getWeapon();
+    const weapon = new LaserBulletWeapon(this.game, this.player, 'blue_bullet').getWeapon();
     this.player.addBehaviour(new PlayerFire(this.game, this.player, weapon));
     ships.add(this.player);
 
