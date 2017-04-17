@@ -7,6 +7,11 @@ export default class extends Ship {
   constructor(game, x, y, target, texture) {
     super(game, x, y, texture);
 
+    const customData = {
+      damage: 20,
+    };
+    this.data = Object.assign({}, this.data, customData);
+
     this.events.onKilled.add(() => {
       const explosion = this.game.explosionsGroup.getFirstExists(false);
       explosion.reset(this.x, this.y);

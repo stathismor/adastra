@@ -35,4 +35,8 @@ export default class extends Phaser.Sprite {
     }
     this.behaviours.splice(index, 1);
   }
+
+  getBehaviour(className) {
+    return this.behaviours.find(behaviour => behaviour instanceof className);
+  }
 }

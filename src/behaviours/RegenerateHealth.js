@@ -13,34 +13,20 @@ export default class extends Behaviour {
     this.target = target;
     this.weapon = weapon;
     this.regenerationTween = new Tweenable();
-    this.persists = true;
   }
 
-  update() {
-    // @TODO: WIll need to investigate the performance impact of this
-    this.game.physics.arcade.overlap(
-      this.target,
-      this.weapon.bullets,
-      this.collisionHandler,
-      null,
-      {
-        game: this.game,
-        weapon: this.weapon,
-        tweenable: this.regenerationTween,
-      });
-  }
+  update() {}
 
-  collisionHandler(target, bullet) {
-    bullet.kill();
+  damage(target, damageValue) {
     this.game.camera.shake(SHAKE_INTENSITY, SHAKE_DURATION, true, Phaser.Camera.SHAKE_BOTH, false);
 
-    this.tweenable.stop();
+    this.regenerationTween.stop();
     const t = target;
 
     // If target is dead, the onKilled will be fired.
-    t.damage(bullet.data.damage);
+    t.damage(damageValue);
 
-    this.tweenable = new Tweenable().tween({
+    this.regenerationTween = new Tweenable().tween({
       from: { health: t.health },
       to: { health: target.maxHealth },
       duration: REGENERATION_MAX_DURATION * ((target.maxHealth - t.health) / target.maxHealth),

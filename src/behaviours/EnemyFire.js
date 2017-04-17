@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import Behaviour from './Behaviour';
-import PlayerHit from './PlayerHit';
+import WeaponDamage from './WeaponDamage';
 import LaserBulletWeapon from '../weapons/LaserBulletWeapon';
 
 const RAY_DISTANCE = 600;
@@ -12,7 +12,7 @@ export default class extends Behaviour {
     this.target = target;
     this.weapon = new LaserBulletWeapon(game, owner, 'red_bullet', weaponProps).getWeapon();
     // @TODO: Not sure this is the right place for it
-    owner.addBehaviour(new PlayerHit(this.game, owner, target, this.weapon));
+    owner.addBehaviour(new WeaponDamage(this.game, owner, target, this.weapon));
   }
 
   update() {
