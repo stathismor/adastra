@@ -8,8 +8,7 @@
     "dev": "webpack",
     "prod": "webpack --config webpack.production.config.js",
     "deploy": "npm run prod && gh-pages -d deploy",
-    "test": "standard",
-    "start": "NPM_CONFIG_PRODUCTION=true node heroku/index.js"
+    "test": "standard"
   },
   "license": "MIT",
   "devDependencies": {
