@@ -9,6 +9,9 @@ export default class extends Ship {
   constructor(game, x, y) {
     super(game, x, y, 'ship');
 
+    // Set a 32x32 hitbox
+    this.body.setSize(32, 32, 16, 16);
+
     this.health = 100;
     this.maxHealth = 100;
 
