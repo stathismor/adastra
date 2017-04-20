@@ -13,7 +13,6 @@ export default class extends Behaviour {
 
   update() {
     // @TODO: WIll need to investigate the performance impact of this
-    // console.log(this.owner, this.game.enemiesGroup);
     if (!this.game.physics.arcade.overlap(
         this.owner,
         this.game.enemiesGroup.children,

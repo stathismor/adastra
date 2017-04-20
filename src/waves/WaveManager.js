@@ -4,6 +4,7 @@ import { getRandomPointInDirection } from '../utils';
 
 import Enemy1 from '../sprites/enemy/Enemy1';
 import Enemy2 from '../sprites/enemy/Enemy2';
+import Mothership from '../sprites/enemy/Mothership';
 
 const SPAWN_MIN_DISTANCE = 500;
 const SPAWN_MAX_DISTANCE = 900;
@@ -19,6 +20,10 @@ const enemyGroups = [
   {
     Class: Enemy2,
     size: 30,
+  },
+  {
+    Class: Mothership,
+    size: 10,
   },
 ];
 
@@ -50,12 +55,20 @@ export default class {
       return true;
     });
 
-    this.game.time.events.add(Phaser.Timer.SECOND * 6, () => this.spawnEnemies(2, 0), this);
+    this.game.time.events.add(Phaser.Timer.SECOND * 1, () => this.spawnEnemies(2, 0), this);
   }
 
   process() {
     // @TODO: Obviously make this nicer
-    const index = this.player.points < 100 ? 0 : 1;
+    let index = 0;
+    if (this.player.points < 100) {
+      index = 0;
+    } else if (this.player.points < 200) {
+      index = 1;
+    } else if (this.player.points < 300) {
+      index = 2;
+    }
+
     const estimatedEnemiesCount = Math.floor(this.spawnFn(this.player.points));
     const currentEnemiesCount = this.game.enemiesGroup.getChildAt(index).countLiving() +
                                 this.queuedEnemies;
@@ -65,7 +78,14 @@ export default class {
 
   spawnFn(points) {
     // @TODO: Obviously make this nicer
-    const factor = this.player.points < 100 ? 0.1 : 0.02;
+    let factor = 0;
+    if (this.player.points < 100) {
+      factor = 0.08;
+    } else if (this.player.points < 200) {
+      factor = 0.02;
+    } else if (this.player.points < 300) {
+      factor = 0.005;
+    }
     return points * factor;
   }
 

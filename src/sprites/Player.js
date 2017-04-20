@@ -12,8 +12,8 @@ export default class extends Ship {
     // Set a 32x32 hitbox
     this.body.setSize(32, 32, 16, 16);
 
-    this.health = 100;
-    this.maxHealth = 100;
+    this.health = 200;
+    this.maxHealth = 200;
 
     this.points = 0;
 

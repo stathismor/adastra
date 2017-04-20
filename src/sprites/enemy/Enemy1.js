@@ -1,6 +1,6 @@
 import Enemy from './Enemy';
 import AcceleratedFollow from '../../behaviours/AcceleratedFollow';
-import EnemyFire from '../../behaviours/EnemyFire';
+import MovableEnemyFire from '../../behaviours/MovableEnemyFire';
 
 export default class extends Enemy {
 
@@ -17,7 +17,7 @@ export default class extends Enemy {
     this.points = 20;
 
     this.addBehaviour(new AcceleratedFollow(this.game, this, target));
-    this.addBehaviour(new EnemyFire(this.game, this, target,
+    this.addBehaviour(new MovableEnemyFire(this.game, this, target,
       {
         fireRate: 800,
         bulletSpeed: 300,
