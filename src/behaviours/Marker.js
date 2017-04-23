@@ -13,6 +13,10 @@ export default class extends Behaviour {
     this.marker.anchor.setTo(0.5);
     this.marker.visible = false;
     this.game.add.existing(this.marker);
+
+    this.owner.events.onKilled.add(() => {
+      this.marker.visible = false;
+    });
   }
 
   update() {
