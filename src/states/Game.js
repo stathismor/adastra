@@ -19,13 +19,14 @@ const BG_SIZE = 1920;
 export default class extends Phaser.State {
   init() {}
   preload() {
-    this.game.canUpdate = false;
+    this.game.canUpdate = true;
     this.game.time.advancedTiming = true;
   }
 
   create() {
     this.game.stage.backgroundColor = '#222523';
 
+    const blackHole = new Ship(this.game, -400, 0, 'enemy_mothership')
     this.player = new Player(this.game, 0, 0);
 
     this.bg1 = new Phaser.TileSprite(this.game,
@@ -50,6 +51,11 @@ export default class extends Phaser.State {
 
     this.backgrounds = this.game.add.group();
     this.backgrounds.addMultiple([this.bg1, this.bg2]);
+
+
+    this.game.blackHolesGroup = this.game.add.group();
+    this.game.blackHolesGroup.add(blackHole);
+
 
     const ships = this.game.add.group();
     // Because of the rendering order, this needs to be added here
@@ -79,7 +85,7 @@ export default class extends Phaser.State {
 
     this.controller = new Control(this.game, this.player);
 
-    this.intro();
+    // this.intro();
   }
 
   update() {

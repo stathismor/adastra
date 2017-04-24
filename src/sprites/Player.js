@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 import Ship from './Ship';
 import Emitter from '../behaviours/Emitter';
 import DamageEmitter from '../behaviours/DamageEmitter';
@@ -28,5 +30,19 @@ export default class extends Ship {
     this.addBehaviour(new RegenerateHealth(game, this));
     this.addBehaviour(new DamageEmitter(game, this));
     this.addBehaviour(new EnemyDamage(game, this));
+  }
+
+  update() {
+    const blackHole = this.game.blackHolesGroup.getFirstAlive();
+    const holeGravity = new Phaser.Point(blackHole.x, blackHole.y);
+    holeGravity.subtract(this.x, this.y);
+    holeGravity.normalize();
+
+    const magnitude = 160000;
+    const distance = this.world.distance(blackHole.world);
+    holeGravity.setMagnitude(magnitude / distance);
+
+    this.body.gravity.x = holeGravity.x;
+    this.body.gravity.y = holeGravity.y;
   }
 }
