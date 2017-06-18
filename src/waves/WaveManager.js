@@ -15,15 +15,15 @@ const SPAWN_MAX_TIME = 4;
 const enemyGroups = [
   {
     Class: Enemy1,
-    size: 30,
+    size: 0,
   },
   {
     Class: Enemy2,
-    size: 30,
+    size: 0,
   },
   {
     Class: Mothership,
-    size: 10,
+    size: 0,
   },
 ];
 

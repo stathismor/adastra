@@ -8,6 +8,7 @@ const STOP_OFFSET = 1.5;
 const MAX_THRUST_DELAY = 1550;
 const MAX_THRUST_RATE = 0.95;
 const ROTATION_THRUST_FRICTION = 0.45;
+const ROTATION_SPEED = 0.02;
 
 export default class extends Behaviour {
 
@@ -17,6 +18,11 @@ export default class extends Behaviour {
     this.cursors = game.input.keyboard.createCursorKeys();
     this.initKeyboard();
     this.thrustDownAt = 0;
+
+    this.wings = owner.addChild(game.make.sprite(0, 0, 'ship2', 1));
+    this.wings.anchor.setTo(0.5);
+
+    // var tween = game.add.tween(this.wings.scale).to( { y: -1 }, 10000, "Linear", true, 0, -1, true);
   }
 
   initKeyboard() {
@@ -27,8 +33,15 @@ export default class extends Behaviour {
   }
 
   update() {
+      
+
     // Move
     if (this.key_left.isDown || this.key_right.isDown) {
+
+      if (this.wings.scale.y > 0.75) {
+        this.wings.scale.y -= ROTATION_SPEED;
+      }
+
       let rotationSpeed = this.owner.movement.rotationSpeed;
       if (this.key_thrust.isDown || this.key_reverse.isDown) {
         rotationSpeed *= ROTATION_THRUST_FRICTION;
@@ -40,6 +53,10 @@ export default class extends Behaviour {
       }
     } else {
       this.owner.body.angularVelocity = 0;
+
+      if (this.wings.scale.y != 1) {
+        this.wings.scale.y += ROTATION_SPEED;
+      }
     }
 
     if (this.key_thrust.isDown) {
@@ -57,9 +74,9 @@ export default class extends Behaviour {
       if (((magnitude / this.owner.movement.maxVelocity) >
            MAX_THRUST_RATE) ||
           ((this.game.time.now - this.thrustDownAt) > MAX_THRUST_DELAY)) {
-        this.owner.frame = 2;
+        // this.owner.frame = 2;
       } else {
-        this.owner.frame = 1;
+        // this.owner.frame = 1;
       }
     } else if (this.key_reverse.isDown) {
       this.owner.frame = 3;
@@ -70,7 +87,7 @@ export default class extends Behaviour {
                                                      this.owner.body.velocity.getMagnitude()));
     } else {
       this.thrustDownAt = 0;
-      this.owner.frame = 0;
+      // this.owner.frame = 0;
       this.owner.body.acceleration.set(0);
 
       // Immobilise

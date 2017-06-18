@@ -15,6 +15,7 @@ export default class extends Phaser.State {
     // load your assets
     //
     this.game.load.spritesheet('ship', 'assets/images/ship.png', 64, 64);
+    this.game.load.spritesheet('ship2', 'assets/images/ship2.png', 32, 32);
     this.load.image('blue_bullet', 'assets/images/blue_bullet.png');
     this.load.image('red_bullet', 'assets/images/red_bullet.png');
     this.load.image('red_bullet_big', 'assets/images/red_bullet_big.png');

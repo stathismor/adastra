@@ -7,7 +7,7 @@ import RegenerateHealth from '../behaviours/RegenerateHealth';
 export default class extends Ship {
 
   constructor(game, x, y) {
-    super(game, x, y, 'ship');
+    super(game, x, y, 'ship2', 1);
 
     // Set a 32x32 hitbox
     this.body.setSize(32, 32, 16, 16);
