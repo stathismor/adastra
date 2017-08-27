@@ -5,8 +5,6 @@ import Behaviour from './Behaviour';
 const SIDEWAYS_FRICTION = 0.987;
 const IMMOBILISE_LERP = 0.007;
 const STOP_OFFSET = 1.5;
-const MAX_THRUST_DELAY = 1550;
-const MAX_THRUST_RATE = 0.95;
 const ROTATION_THRUST_FRICTION = 0.45;
 
 export default class extends Behaviour {
@@ -14,16 +12,37 @@ export default class extends Behaviour {
   constructor(game, owner) {
     super(game, owner);
 
+    this.turnLeftAnimation = owner.animations.add('turn', [0, 2], 10.0, false);
+    this.turnRightAnimation = owner.animations.add('turn', [0, 1], 10.0, false);
+
     this.cursors = game.input.keyboard.createCursorKeys();
-    this.initKeyboard();
-    this.thrustDownAt = 0;
+    this.initKeyboard(this.game, this.turnLeftAnimation, this.turnRightAnimation);
+
+    this.thrust = new Phaser.Sprite(game, 0, 0, 'thrust');
+    this.thrust.x = -owner.offsetX - this.thrust.width;
+    this.thrust.y = -owner.offsetY;
+    this.thrustAnim = this.thrust.animations.add('thrusting', null, 10, true);
+    this.thrustAnim.play();
+    owner.addChild(this.thrust);
   }
 
-  initKeyboard() {
-    this.key_left = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-    this.key_right = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-    this.key_thrust = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
-    this.key_reverse = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+  initKeyboard(game, turnLeftAnimation, turnRightAnimation) {
+    this.key_left = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+    this.key_right = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+    this.key_thrust = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+    this.key_reverse = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+
+    this.key_left.onDown.add(this.animate, {animation: turnLeftAnimation});
+    this.key_right.onDown.add(this.animate, {animation: turnRightAnimation});
+  }
+
+  animate() {
+    if (this.animation.isReversed) {
+      this.animation.reverse();
+      this.animation.play();
+    } else {
+      this.animation.play();
+    }
   }
 
   update() {
@@ -40,13 +59,19 @@ export default class extends Behaviour {
       }
     } else {
       this.owner.body.angularVelocity = 0;
+
+      if (this.owner.frame !== 0) {
+        if (!this.turnLeftAnimation.isReversed) {
+          this.turnLeftAnimation.reverse();
+        }
+
+        if (!this.turnLeftAnimation.isPlaying) {
+          this.turnLeftAnimation.play();
+        }
+      }
     }
 
     if (this.key_thrust.isDown) {
-      if (this.thrustDownAt === 0) {
-        this.thrustDownAt = this.game.time.now;
-      }
-
       const magnitude = this.owner.body.velocity.getMagnitude();
       this.game.physics.arcade.accelerationFromRotation(this.owner.rotation,
                                                         this.owner.movement.acceleration,
@@ -54,23 +79,15 @@ export default class extends Behaviour {
       this.owner.body.velocity.setMagnitude(Math.min(this.owner.movement.maxVelocity,
                                                      magnitude));
 
-      if (((magnitude / this.owner.movement.maxVelocity) >
-           MAX_THRUST_RATE) ||
-          ((this.game.time.now - this.thrustDownAt) > MAX_THRUST_DELAY)) {
-        this.owner.frame = 2;
-      } else {
-        this.owner.frame = 1;
-      }
+      this.thrust.visible = true;
     } else if (this.key_reverse.isDown) {
-      this.owner.frame = 3;
       this.game.physics.arcade.accelerationFromRotation(this.owner.rotation,
                                                         -this.owner.movement.acceleration,
                                                         this.owner.body.acceleration);
       this.owner.body.velocity.setMagnitude(Math.min(this.owner.movement.maxVelocity,
                                                      this.owner.body.velocity.getMagnitude()));
     } else {
-      this.thrustDownAt = 0;
-      this.owner.frame = 0;
+      this.thrust.visible = false;
       this.owner.body.acceleration.set(0);
 
       // Immobilise
