@@ -34,15 +34,20 @@ export default class extends Behaviour {
 
     this.key_left.onDown.add(this.animate, {animation: turnLeftAnimation});
     this.key_right.onDown.add(this.animate, {animation: turnRightAnimation});
+    this.key_left.onUp.add(this.resetAnimation, {animation: turnLeftAnimation});
+    this.key_right.onUp.add(this.resetAnimation, {animation: turnRightAnimation});
   }
 
   animate() {
     if (this.animation.isReversed) {
       this.animation.reverse();
-      this.animation.play();
-    } else {
-      this.animation.play();
     }
+    this.animation.play();
+  }
+
+  resetAnimation() {
+      this.animation.reverse();
+      this.animation.play();
   }
 
   update() {
@@ -59,16 +64,6 @@ export default class extends Behaviour {
       }
     } else {
       this.owner.body.angularVelocity = 0;
-
-      if (this.owner.frame !== 0) {
-        if (!this.turnLeftAnimation.isReversed) {
-          this.turnLeftAnimation.reverse();
-        }
-
-        if (!this.turnLeftAnimation.isPlaying) {
-          this.turnLeftAnimation.play();
-        }
-      }
     }
 
     if (this.key_thrust.isDown) {
