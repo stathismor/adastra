@@ -1,6 +1,7 @@
 import Ship from '../Ship';
 import Marker from '../../behaviours/Marker';
 import Respawn from '../../behaviours/Respawn';
+import LeavePowerup from '../../behaviours/LeavePowerup';
 
 export default class extends Ship {
 
@@ -20,5 +21,6 @@ export default class extends Ship {
 
     this.addBehaviour(new Marker(this.game, this, target));
     this.addBehaviour(new Respawn(this.game, this, target));
+    this.addBehaviour(new LeavePowerup(this.game, this));
   }
 }

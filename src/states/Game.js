@@ -21,6 +21,15 @@ export default class extends Phaser.State {
   preload() {
     this.game.canUpdate = false;
     this.game.time.advancedTiming = true;
+
+    // Init groups
+    this.game.planetsGroup = this.game.add.group();
+    this.game.backgroundsGroup = this.game.add.group();
+    this.game.shipsGroup = this.game.add.group();
+    this.game.explosionsGroup = this.game.add.group();
+    this.game.blinkingStarsGroup = this.game.add.group();
+    this.game.powerupsGroup = this.game.add.group();
+    this.game.enemiesGroup = this.game.add.group();
   }
 
   create() {
@@ -41,37 +50,33 @@ export default class extends Phaser.State {
 
     this.camera = new Camera(this.game, this.player, [this.bg1, this.bg2]);
 
-    const planets = this.game.add.group();
-    planets.addMultiple([
+    this.game.planetsGroup.addMultiple([
       new Planet(this.game, this.player, this.camera, 'earth', 0.87, 800, 920),
       new Planet(this.game, this.player, this.camera, 'planet', 0.75, 800, 900),
       new Planet(this.game, this.player, this.camera, 'moon', 0.45, 800, 900),
     ]);
 
-    this.backgrounds = this.game.add.group();
-    this.backgrounds.addMultiple([this.bg1, this.bg2]);
+    this.game.backgroundsGroup.addMultiple([this.bg1, this.bg2]);
 
-    const ships = this.game.add.group();
     // Because of the rendering order, this needs to be added here
     const weapon = new LaserBulletWeapon(this.game,
                                          this.player,
                                          'blue_bullet',
                                          SmallLaserBullet).getWeapon();
     this.player.addBehaviour(new PlayerFire(this.game, this.player, weapon));
-    ships.add(this.player);
+    this.game.shipsGroup.add(this.player);
 
     //  An explosion pool
-    this.game.explosionsGroup = this.game.add.group();
     this.game.explosionsGroup.createMultiple(10, 'explosion');
     this.game.explosionsGroup.forEach((explosion) => {
       explosion.anchor.setTo(0.5);
       explosion.animations.add('explode');
     });
 
-    const blinkingStars = this.game.add.group();
+    
     for (let i = 0; i < MAX_BLINKING_STARS; i += 1) {
       const star = new BlinkingStar(this.game, this.player, this.camera);
-      blinkingStars.add(star);
+      this.game.blinkingStarsGroup.add(star);
     }
 
     const waveManager = new WaveManager(this.game, this.player);

@@ -32,7 +32,6 @@ export default class {
   constructor(game, player) {
     this.game = game;
     this.player = player;
-    this.game.enemiesGroup = this.game.add.group();
     this.secondsCount = 0;
     this.previousSeconds = 0;
     this.queuedEnemies = 0;
