@@ -1,5 +1,13 @@
 import Phaser from 'phaser';
 
+import Gaussian from 'gaussian';
+// import ppf from 'gaussian';
+const distribution = Gaussian(3, 4);
+console.log(distribution.pdf(1));
+console.log(distribution.pdf(2));
+console.log(distribution.pdf(3));
+// var distribution = gaussian(mean, variance);
+
 import { getRandomPointInDirection } from '../utils';
 
 import Enemy1 from '../sprites/enemy/Enemy1';
