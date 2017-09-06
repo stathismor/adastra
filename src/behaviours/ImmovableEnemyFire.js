@@ -1,18 +1,13 @@
 import Behaviour from './Behaviour';
 import WeaponDamage from './WeaponDamage';
 import LaserBulletWeapon from '../weapons/LaserBulletWeapon';
-import BigLaserBullet from '../weapons/BigLaserBullet';
+import BigRedBullet from '../weapons/BigRedBullet';
 
 export default class extends Behaviour {
-  constructor(game, owner, target, weaponProps) {
+  constructor(game, owner, target, properties) {
     super(game, owner);
     this.target = target;
-    this.weapon = new LaserBulletWeapon(game,
-                                        owner,
-                                        'red_bullet_big',
-                                        BigLaserBullet,
-                                        weaponProps).getWeapon();
-    // @TODO: Not sure this is the right place for it
+    this.weapon = new LaserBulletWeapon(game, owner, 25, BigRedBullet, properties);
     owner.addBehaviour(new WeaponDamage(this.game, owner, target, this.weapon));
   }
 

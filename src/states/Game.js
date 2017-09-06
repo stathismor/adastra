@@ -9,7 +9,6 @@ import Player from '../sprites/Player';
 import Control from '../behaviours/Control';
 import PlayerFire from '../behaviours/PlayerFire';
 import LaserBulletWeapon from '../weapons/LaserBulletWeapon';
-import SmallLaserBullet from '../weapons/SmallLaserBullet';
 import WaveManager from '../waves/WaveManager';
 import Hud from '../hud/Hud';
 
@@ -58,12 +57,7 @@ export default class extends Phaser.State {
 
     this.game.backgroundsGroup.addMultiple([this.bg1, this.bg2]);
 
-    // Because of the rendering order, this needs to be added here
-    const weapon = new LaserBulletWeapon(this.game,
-                                         this.player,
-                                         'blue_bullet',
-                                         SmallLaserBullet).getWeapon();
-    this.player.addBehaviour(new PlayerFire(this.game, this.player, weapon));
+    this.player.addBehaviour(new PlayerFire(this.game, this.player));
     this.game.shipsGroup.add(this.player);
 
     //  An explosion pool
