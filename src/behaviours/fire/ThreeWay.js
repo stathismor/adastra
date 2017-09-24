@@ -35,7 +35,10 @@ export default class extends Behaviour {
       this.weapon3.fire(null, x3, y3);
     }
 
-    for (let bulletsGroup of [this.weapon1.bullets, this.weapon2.bullets]) {
+    // @TODO: Need to make this more performant.
+    for (let bulletsGroup of [this.weapon1.bullets,
+                              this.weapon2.bullets,
+                              this.weapon3.bullets]) {
       this.game.physics.arcade.overlap(this.game.enemiesGroup,
                                        bulletsGroup,
                                        this.collisionHandler,
