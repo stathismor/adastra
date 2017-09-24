@@ -4,12 +4,12 @@ import Behaviour from './Behaviour';
 
 export default class extends Behaviour {
 
-  constructor(game, owner, target) {
+  constructor(game, owner, target, texture) {
     super(game, owner);
     this.target = target;
 
     this.intersectionResult = new Phaser.Point(0.0);
-    this.marker = new Phaser.Sprite(this.game, 0, 0, 'marker');
+    this.marker = new Phaser.Sprite(this.game, 0, 0, texture);
     this.marker.anchor.setTo(0.5);
     this.marker.visible = false;
     this.game.add.existing(this.marker);

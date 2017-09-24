@@ -19,7 +19,7 @@ export default class extends Ship {
       explosion.play('explode', 30, false, true);
     });
 
-    this.addBehaviour(new Marker(this.game, this, target));
+    this.addBehaviour(new Marker(this.game, this, target, 'marker'));
     this.addBehaviour(new Respawn(this.game, this, target));
     this.addBehaviour(new LeavePowerup(this.game, this, target));
   }
