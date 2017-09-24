@@ -21,6 +21,6 @@ export default class extends Ship {
 
     this.addBehaviour(new Marker(this.game, this, target));
     this.addBehaviour(new Respawn(this.game, this, target));
-    this.addBehaviour(new LeavePowerup(this.game, this));
+    this.addBehaviour(new LeavePowerup(this.game, this, target));
   }
 }
