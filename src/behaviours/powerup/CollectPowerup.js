@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 
-import Behaviour from './Behaviour';
-import RegenerateHealth from './RegenerateHealth';
+import Behaviour from '../Behaviour';
+import FireBehaviour from '../fire/FireBehaviour';
+import RegenerateHealth from '../RegenerateHealth';
 
 
 export default class extends Behaviour {
@@ -14,7 +15,9 @@ export default class extends Behaviour {
   }
 
   collisionHandler(target, powerup) {
-    this.owner.changeWeapon(powerup.getBehaviour());
-    powerup.kill()
+    if (powerup.getBehaviour() instanceof FireBehaviour) {
+      this.owner.changeWeapon(powerup.getBehaviour());
+      powerup.kill();
+    }
   }
 }

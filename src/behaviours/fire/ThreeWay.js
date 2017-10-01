@@ -1,22 +1,18 @@
 import Phaser from 'phaser';
 
-import Behaviour from '..//Behaviour';
+import FireBehaviour from './FireBehaviour';
 import LaserBulletWeapon from '../../weapons/LaserBulletWeapon';
 import SmallRedBullet from '../../weapons/SmallRedBullet';
 
 const BULLET_ANGLE = 0.33;
 const BULLET_DISTANCE = 100;
 
-export default class extends Behaviour {
+export default class extends FireBehaviour {
   constructor(game, owner) {
     super(game, owner);
     this.weapon1 = new LaserBulletWeapon(game, owner, 30, SmallRedBullet);
     this.weapon2 = new LaserBulletWeapon(game, owner, 30, SmallRedBullet);
     this.weapon3 = new LaserBulletWeapon(game, owner, 30, SmallRedBullet);
-    this.bulletsGroup = this.game.add.group()
-
-    this.key_fire_1 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    this.key_fire_2 = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
   }
 
   update() {
@@ -45,19 +41,5 @@ export default class extends Behaviour {
                                        null,
                                        { game: this.game, owner: this.owner, weapon: this.weapon });
       }
-  }
-
-  collisionHandler(enemy, bullet) {
-    // TODO: Can I avoid even doing the check when off camera?
-    if (enemy.inCamera && bullet.inCamera) {
-      bullet.kill();
-
-      const e = enemy;
-      e.damage(bullet.data.damage);
-
-      if (!e.alive) {
-        this.owner.points += e.points;
-      }
-    }
   }
 }

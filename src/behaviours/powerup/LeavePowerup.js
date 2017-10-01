@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
-import Powerup from '../sprites/Powerup';
-import Behaviour from './Behaviour';
+import Powerup from '../../sprites/Powerup';
+import Behaviour from '../Behaviour';
 
 
 export default class extends Behaviour {

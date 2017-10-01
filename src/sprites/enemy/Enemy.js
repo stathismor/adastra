@@ -1,7 +1,7 @@
 import Ship from '../Ship';
 import Marker from '../../behaviours/Marker';
 import Respawn from '../../behaviours/Respawn';
-import LeavePowerup from '../../behaviours/LeavePowerup';
+import LeavePowerup from '../../behaviours/powerup/LeavePowerup';
 
 export default class extends Ship {
 

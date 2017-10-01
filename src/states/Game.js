@@ -17,7 +17,7 @@ const BG_SIZE = 1920;
 export default class extends Phaser.State {
   init() {}
   preload() {
-    this.game.canUpdate = false;
+    this.game.canUpdate = true;
     this.game.time.advancedTiming = true;
 
     // Init groups
@@ -102,6 +102,7 @@ export default class extends Phaser.State {
   }
 
   intro() {
+    this.game.canUpdate = false;
     this.player.visible = false;
     this.game.camera.focusOnXY(0, 0);
 
