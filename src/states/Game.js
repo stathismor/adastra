@@ -19,7 +19,6 @@ export default class extends Phaser.State {
   preload() {
     this.game.canUpdate = true;
     this.game.time.advancedTiming = true;
-
     // Init groups
     this.game.planetsGroup = this.game.add.group();
     this.game.backgroundsGroup = this.game.add.group();
@@ -28,9 +27,12 @@ export default class extends Phaser.State {
     this.game.blinkingStarsGroup = this.game.add.group();
     this.game.powerupsGroup = this.game.add.group();
     this.game.enemiesGroup = this.game.add.group();
+
+    this.game.audio = this.game.add.audio('boden');
   }
 
   create() {
+    this.game.audio.play();
     this.game.stage.backgroundColor = '#222523';
 
     this.player = new Player(this.game, 0, 0);
