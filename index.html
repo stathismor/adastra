@@ -8,22 +8,74 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta http-equiv="cleartype" content="on">
-
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <style>
         html,
         body {
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
+        }
+        body {
+            background: url(assets/images/stars_front.png) #F0F;
+        }
+        h1,
+        h2 {
+            font-family: 'Press Start 2P', cursive;
+        }
+        h1 {
+            font-size: 6rem;
+            margin-bottom: 0;
+        }
+        h2 {
+            font-size: 2rem;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-flow: column;
+        }
+        .moon,
+        .planet {
+            position: absolute;
+            opacity: 0.6;
+            z-index: -1;
+        }
+        .moon {
+            right: -1%;
+            width: 50%;
+        }
+        .planet {
+            left: -1%;
+            top: 20rem;
+            width: 15%;
+        }
+        .footer {
+            margin-top: 5rem;
+            padding: 0.5rem;
+            background: #333;
+            color: #ccc;
+            text-align: center;
+        }
+        a {
+            color: #fff;
         }
     </style>
 </head>
 
 <body>
-
-    <div id="content"></div>
+    <div class="center">
+        <h1>ADASTRA</h1>
+        <h2>The game</h2>
+        <img class="moon" src="assets/images/moon.png" alt="">
+        <img class="planet" src="assets/images/planet.png" alt="">
+        <div id="content"></div>
+    </div>
+    <div class="footer">Made with ❤️ by <a href="https://github.com/jManji/adastra">jManji</a></div>
+   
     <script src="dist/vendor.bundle.js"></script>
     <script src="dist/bundle.js"></script>
-
 </body>
 
 </html>
