@@ -34,8 +34,6 @@ export default class extends Phaser.State {
     this.load.spritesheet('damage', 'assets/images/damage.png', 16, 8);
     this.load.spritesheet('thrust', 'assets/images/thrust.png', 32, 32);
     this.load.spritesheet('powerup', 'assets/images/powerup.png');
-
-    this.load.audio('boden', ['assets/audio/soundtrack.mp3']);
   }
 
   create() {
