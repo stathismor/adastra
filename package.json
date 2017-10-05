@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "webpack",
     "prod": "webpack --config webpack.production.config.js",
-    "deploy": "npm run prod && gh-pages -d deploy",
+    "deploy": "npm run prod && gh-pages-deploy",
     "test": "standard"
   },
   "license": "MIT",
@@ -35,5 +35,10 @@
     "express": "^4.14.1",
     "shifty": "^1.5.4",
     "webfontloader": "^1.6.28"
+  },
+  "gh-pages-deploy": {
+    "staticpath": "deploy",
+    "cname": "play.adastrathegame.com",
+    "noprompt": false
   }
 }
