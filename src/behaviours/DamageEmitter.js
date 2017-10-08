@@ -25,7 +25,6 @@ export default class extends Behaviour {
     // (makes it run on intro otherwise)
     if (!this.smokeEmitter.on && this.owner.health <= 80) {
       this.smokeEmitter.start(false, SMOKE_LIFETIME, 50);
-      this.smokeEmitter.on = true;
     } else if (this.smokeEmitter && this.owner.health > 80) {
       this.smokeEmitter.on = false;
     }
