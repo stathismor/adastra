@@ -15,9 +15,6 @@ export default class extends Behaviour {
   }
 
   collisionHandler(target, powerup) {
-    if (powerup.getBehaviour() instanceof FireBehaviour) {
-      this.owner.changeWeapon(powerup.getBehaviour());
-      powerup.kill();
-    }
+    powerup.apply();
   }
 }
