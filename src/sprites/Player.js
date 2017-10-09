@@ -1,7 +1,7 @@
 import Ship from './Ship';
-import Emitter from '../behaviours/Emitter';
 import LaserBeam from '../behaviours/fire/LaserBeam';
 import DamageEmitter from '../behaviours/DamageEmitter';
+import ThrustEmitter from '../behaviours/ThrustEmitter';
 import EnemyDamage from '../behaviours/EnemyDamage';
 import RegenerateHealth from '../behaviours/RegenerateHealth';
 import CollectPowerup from '../behaviours/powerup/CollectPowerup';
@@ -30,6 +30,7 @@ export default class extends Ship {
     this.addBehaviour(this.fireBehaviour);
     this.addBehaviour(new RegenerateHealth(game, this));
     this.addBehaviour(new DamageEmitter(game, this));
+    this.addBehaviour(new ThrustEmitter(game, this));
     this.addBehaviour(new EnemyDamage(game, this));
     this.addBehaviour(new CollectPowerup(game, this));
   }
