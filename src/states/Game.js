@@ -48,9 +48,9 @@ export default class extends Phaser.State {
     this.camera = new Camera(this.game, this.player, [this.bg1, this.bg2]);
 
     this.game.planetsGroup.addMultiple([
-      new Planet(this.game, this.player, this.camera, 'earth', 0.87, 800, 920),
-      new Planet(this.game, this.player, this.camera, 'planet', 0.75, 800, 900),
-      new Planet(this.game, this.player, this.camera, 'moon', 0.45, 800, 900),
+      new Planet(this.game, this.player, this.camera, 'earth', 0.87),
+      new Planet(this.game, this.player, this.camera, 'planet', 0.75),
+      new Planet(this.game, this.player, this.camera, 'moon', 0.45),
     ]);
 
     this.game.backgroundsGroup.addMultiple([this.bg1, this.bg2]);

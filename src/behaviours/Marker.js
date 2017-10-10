@@ -20,24 +20,8 @@ export default class extends Behaviour {
   }
 
   update() {
-    // Camera bounds as lines. @TODO: This should probably be done once, per game frame, not here
-    const cameraLines = [
-      new Phaser.Line(this.game.camera.view.x, this.game.camera.view.y,
-                      this.game.camera.view.x + this.game.camera.view.width,
-                      this.game.camera.view.y),
-      new Phaser.Line(this.game.camera.view.x, this.game.camera.view.y,
-                      this.game.camera.view.x,
-                      this.game.camera.view.y + this.game.camera.view.height),
-      new Phaser.Line(this.game.camera.view.x + this.game.camera.view.width,
-                      this.game.camera.view.y,
-                      this.game.camera.view.x + this.game.camera.view.width,
-                      this.game.camera.view.y + this.game.camera.view.height),
-      new Phaser.Line(this.game.camera.view.x,
-                      this.game.camera.view.y + this.game.camera.view.height,
-                      this.game.camera.view.x + this.game.camera.view.width,
-                      this.game.camera.view.y + this.game.camera.view.height),
-    ];
-
+    // Camera bounds as lines. @TODO: This should probably be done once, per frame, not here
+    const cameraLines = this.game.camera.view.sides();
     const enemyTargetRay = new Phaser.Line(this.owner.x, this.owner.y,
                                            this.target.x, this.target.y);
 
