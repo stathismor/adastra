@@ -21,6 +21,9 @@ export default class extends Phaser.State {
     this.load.image('enemy2', 'assets/images/enemy2.png');
     this.load.image('stars_back', 'assets/images/stars_back.png');
     this.load.image('stars_front', 'assets/images/stars_front.png');
+    this.load.image('back', 'assets/images/back.png');
+    this.load.image('back1', 'assets/images/back1.png');
+    this.load.image('back2', 'assets/images/back2.png');
     this.load.image('blinking_star', 'assets/images/blinking_star.png');
     this.load.image('smoke', 'assets/images/smoke.png');
     this.load.image('planet', 'assets/images/planet.png');

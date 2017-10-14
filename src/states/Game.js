@@ -35,25 +35,30 @@ export default class extends Phaser.State {
 
     this.player = new Player(this.game, 0, 0);
 
+    this.bg = new Phaser.TileSprite(this.game,
+                                     0 - (this.game.world.centerX / 2),
+                                     0 - (this.game.world.centerY / 2),
+                                     BG_SIZE, BG_SIZE,
+                                     'back');
     this.bg1 = new Phaser.TileSprite(this.game,
                                      0 - (this.game.world.centerX / 2),
                                      0 - (this.game.world.centerY / 2),
                                      BG_SIZE, BG_SIZE,
-                                     'stars_back');
+                                     'back1');
     this.bg2 = new Phaser.TileSprite(this.game,
                                      0 - (this.game.world.centerX / 2),
                                      0 - (this.game.world.centerY / 2),
                                      BG_SIZE, BG_SIZE,
-                                     'stars_front');
+                                     'back2');
 
-    this.camera = new Camera(this.game, this.player, [this.bg1, this.bg2]);
+    this.camera = new Camera(this.game, this.player, [this.bg, this.bg1, this.bg2]);
 
     this.game.planetsGroup.addMultiple([
       new Planet(this.game, this.player, this.camera, 'earth', 0.87),
       new Planet(this.game, this.player, this.camera, 'planet', 0.75),
       new Planet(this.game, this.player, this.camera, 'moon', 0.45),
     ]);
-    this.game.backgroundsGroup.addMultiple([this.bg1, this.bg2]);
+    this.game.backgroundsGroup.addMultiple([this.bg, this.bg1, this.bg2]);
 
 
     for (let i = 0; i < 4; i += 1) {
