@@ -14,8 +14,8 @@ export default class extends Powerup {
   }
 
   apply() {
-    this.target.movement.acceleration += 200;
-    this.target.movement.maxVelocity += 200;
+    this.target.movement.acceleration += 30;
+    this.target.movement.maxVelocity += 30;
     this.kill();
   }
 }
