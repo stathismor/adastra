@@ -1,12 +1,18 @@
 import Entity from './../Entity';
 import ThreeWay from '../../behaviours/fire/ThreeWay';
 import Powerup from './Powerup';
+import Marker from '../../behaviours/Marker';
 
 export default class extends Powerup {
 
-  constructor(game, owner, target, texture) {
-    super(game, owner, target, texture);
-    this.fireBehaviour = new ThreeWay(game, target);
+  constructor(game) {
+    super(game, 'fire_powerup');
+  }
+
+  spawn(owner, target) {
+    super.spawn(owner, target);
+    this.addBehaviour(new Marker(this.game, this, target, 'yellow_marker'));
+    this.fireBehaviour = new ThreeWay(this.game, target);
   }
 
   apply() {

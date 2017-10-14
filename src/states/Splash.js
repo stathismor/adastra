@@ -27,13 +27,15 @@ export default class extends Phaser.State {
     this.load.image('moon', 'assets/images/moon.png');
     this.load.image('earth', 'assets/images/earth.png');
     this.load.image('marker', 'assets/images/marker.png');
-    this.load.image('marker_powerup', 'assets/images/marker_powerup.png');
+    this.load.image('blue_marker', 'assets/images/blue_marker.png');
+    this.load.image('yellow_marker', 'assets/images/yellow_marker.png');
     this.load.image('mothership', 'assets/images/mothership.png');
     this.load.image('enemy_mothership', 'assets/images/enemy_mothership.png');
     this.load.spritesheet('explosion', 'assets/images/explosion.png', 128, 128);
     this.load.spritesheet('damage', 'assets/images/damage.png', 4, 4);
     this.load.spritesheet('thrust', 'assets/images/thrust.png', 32, 32);
-    this.load.spritesheet('powerup', 'assets/images/powerup.png');
+    this.load.spritesheet('fire_powerup', 'assets/images/fire_powerup.png');
+    this.load.spritesheet('speed_powerup', 'assets/images/speed_powerup.png');
   }
 
   create() {

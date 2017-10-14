@@ -9,8 +9,14 @@ export default class extends Behaviour {
   constructor(game, owner, target) {
     super(game, owner);
     this.owner.events.onKilled.add(() => {
-      const powerup = new SpeedPowerup(game, owner, target, 'powerup');
-      game.powerupsGroup.add(powerup);
+      if (Phaser.Utils.chanceRoll(40)) {
+        const powerup = game.powerupsGroup.getFirstDead();
+        if (powerup) {
+            powerup.spawn(owner, target);
+            // @TODO: Find a more efficient random way
+            this.game.powerupsGroup.shuffle();
+        }
+      }
     });
   }
 }

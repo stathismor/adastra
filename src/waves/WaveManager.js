@@ -15,11 +15,11 @@ const SPAWN_MAX_TIME = 4;
 const enemyGroups = [
   {
     Class: Enemy1,
-    size: 30,
+    size: 50,
   },
   {
     Class: Enemy2,
-    size: 30,
+    size: 40,
   },
   {
     Class: Mothership,
@@ -60,11 +60,11 @@ export default class {
   process() {
     // @TODO: Obviously make this nicer
     let index = 0;
-    if (this.player.points < 100) {
+    if (this.player.points < 200) {
       index = 0;
-    } else if (this.player.points < 200) {
-      index = 1;
     } else if (this.player.points < 300) {
+      index = 1;
+    } else if (this.player.points < 450) {
       index = 2;
     }
 
@@ -78,11 +78,11 @@ export default class {
   spawnFn(points) {
     // @TODO: Obviously make this nicer
     let factor = 0;
-    if (this.player.points < 100) {
+    if (this.player.points < 200) {
       factor = 0.08;
-    } else if (this.player.points < 200) {
-      factor = 0.02;
     } else if (this.player.points < 300) {
+      factor = 0.02;
+    } else if (this.player.points < 450) {
       factor = 0.005;
     }
     return points * factor;
