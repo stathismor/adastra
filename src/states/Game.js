@@ -6,7 +6,6 @@ import Ship from '../sprites/Ship';
 import BlinkingStar from '../sprites/BlinkingStar';
 import Planet from '../sprites/Planet';
 import Player from '../sprites/Player';
-import Control from '../behaviours/Control';
 import LaserBulletWeapon from '../weapons/LaserBulletWeapon';
 import WaveManager from '../waves/WaveManager';
 import Hud from '../hud/Hud';
@@ -73,8 +72,6 @@ export default class extends Phaser.State {
     const waveManager = new WaveManager(this.game, this.player);
     this.hud = new Hud(this.game, this.player);
 
-    this.controller = new Control(this.game, this.player);
-
     this.intro();
   }
 
@@ -82,7 +79,6 @@ export default class extends Phaser.State {
     // @TODO: Maybe there is a more elegant way of this this
     if (this.game.canUpdate) {
       this.camera.update();
-      this.controller.update();
       this.hud.update();
     }
   }

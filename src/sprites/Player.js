@@ -1,10 +1,11 @@
 import Ship from './Ship';
-import LaserBeam from '../behaviours/fire/LaserBeam';
+import Shoot from '../behaviours/fire/Shoot';
 import DamageEmitter from '../behaviours/DamageEmitter';
 import ThrustEmitter from '../behaviours/ThrustEmitter';
 import EnemyDamage from '../behaviours/EnemyDamage';
 import RegenerateHealth from '../behaviours/RegenerateHealth';
 import CollectPowerup from '../behaviours/powerup/CollectPowerup';
+import Control from '../behaviours/Control';
 
 export default class extends Ship {
 
@@ -26,8 +27,8 @@ export default class extends Ship {
       this.game.state.start('GameOver', true, false, this.points);
     });
 
-    this.fireBehaviour = new LaserBeam(game, this)
-    this.addBehaviour(this.fireBehaviour);
+    this.addBehaviour(new Control(this.game, this));
+    this.addBehaviour(new Shoot(game, this));
     this.addBehaviour(new RegenerateHealth(game, this));
     this.addBehaviour(new DamageEmitter(game, this));
     this.addBehaviour(new ThrustEmitter(game, this));
