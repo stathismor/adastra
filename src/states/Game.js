@@ -56,10 +56,10 @@ export default class extends Phaser.State {
     this.game.backgroundsGroup.addMultiple([this.bg1, this.bg2]);
 
 
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < 4; i += 1) {
       this.game.powerupsGroup.addChild(new SpeedPowerup(this.game));
     }
-    for (let i = 0; i < 3; i += 1) {
+    for (let i = 0; i < 5; i += 1) {
       this.game.powerupsGroup.addChild(new FirePowerup(this.game));
     }
 
