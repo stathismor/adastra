@@ -12,7 +12,7 @@ import LaserBulletWeapon from '../weapons/LaserBulletWeapon';
 import WaveManager from '../waves/WaveManager';
 import Hud from '../hud/Hud';
 
-const MAX_BLINKING_STARS = 40;
+const MAX_BLINKING_STARS = 17;
 const BG_SIZE = 1920;
 
 export default class extends Phaser.State {
