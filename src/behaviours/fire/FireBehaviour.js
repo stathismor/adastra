@@ -14,12 +14,16 @@ export default class extends Behaviour {
     if (enemy.inCamera && bullet.inCamera) {
       bullet.kill();
 
-      const e = enemy;
-      e.damage(bullet.data.damage);
+      this.damageEnemy(this.owner, enemy, bullet.data.damage);
+    }
+  }
 
-      if (!e.alive) {
-        this.owner.points += e.points;
-      }
+  damageEnemy(owner, enemy, damage) {
+    const e = enemy;
+    e.damage(damage);
+
+    if (!e.alive) {
+      this.owner.points += e.points;
     }
   }
 }

@@ -20,6 +20,6 @@ export default class extends FireBehaviour {
                                      this.weapon.bullets,
                                      this.collisionHandler,
                                      null,
-                                     { game: this.game, owner: this.owner, weapon: this.weapon });
+                                     { owner: this.owner, damageEnemy: this.damageEnemy });
   }
 }

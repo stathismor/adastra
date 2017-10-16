@@ -28,7 +28,8 @@ export default class extends Ship {
     });
 
     this.addBehaviour(new Control(this.game, this));
-    this.addBehaviour(new Shoot(game, this));
+    this.fireBehaviour = new Shoot(game, this);
+    this.addBehaviour(this.fireBehaviour);
     this.addBehaviour(new RegenerateHealth(game, this));
     this.addBehaviour(new DamageEmitter(game, this));
     this.addBehaviour(new ThrustEmitter(game, this));

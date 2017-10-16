@@ -33,6 +33,7 @@ export default class extends Phaser.Sprite {
     if (index === -1) {
       return;
     }
+    this.behaviours[index].destroy();
     this.behaviours.splice(index, 1);
   }
 

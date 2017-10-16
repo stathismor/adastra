@@ -9,7 +9,7 @@ export default class extends Behaviour {
   constructor(game, owner, target) {
     super(game, owner);
     this.owner.events.onKilled.add(() => {
-      if (Phaser.Utils.chanceRoll(40)) {
+      if (Phaser.Utils.chanceRoll(70)) {
         const powerup = game.powerupsGroup.getFirstDead();
         if (powerup) {
             powerup.spawn(owner, target);

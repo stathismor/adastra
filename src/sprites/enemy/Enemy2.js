@@ -17,10 +17,10 @@ export default class extends Enemy {
     this.points = 10;
 
     this.addBehaviour(new LinearFollow(this.game, this, target));
-    this.addBehaviour(new MovableEnemyFire(this.game, this, target,
-      {
-        fireRate: 1000,
-        bulletSpeed: 500,
-      }));
+    // this.addBehaviour(new MovableEnemyFire(this.game, this, target,
+    //   {
+    //     fireRate: 1000,
+    //     bulletSpeed: 500,
+    //   }));
   }
 }

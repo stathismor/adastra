@@ -6,4 +6,5 @@ export default class {
   }
 
   update() {}
+  destroy() {}
 }

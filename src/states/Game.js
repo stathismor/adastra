@@ -6,6 +6,7 @@ import Ship from '../sprites/Ship';
 import BlinkingStar from '../sprites/BlinkingStar';
 import SpeedPowerup from '../sprites/powerup/SpeedPowerup';
 import FirePowerup from '../sprites/powerup/FirePowerup';
+import BeamPowerup from '../sprites/powerup/BeamPowerup';
 import Planet from '../sprites/Planet';
 import Player from '../sprites/Player';
 import LaserBulletWeapon from '../weapons/LaserBulletWeapon';
@@ -61,11 +62,14 @@ export default class extends Phaser.State {
     this.game.backgroundsGroup.addMultiple([this.bg, this.bg1, this.bg2]);
 
 
-    for (let i = 0; i < 4; i += 1) {
+    for (let i = 0; i < 2; i += 1) {
       this.game.powerupsGroup.addChild(new SpeedPowerup(this.game));
     }
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < 3; i += 1) {
       this.game.powerupsGroup.addChild(new FirePowerup(this.game));
+    }
+    for (let i = 0; i < 4; i += 1) {
+      this.game.powerupsGroup.addChild(new BeamPowerup(this.game));
     }
 
     this.game.shipsGroup.add(this.player);

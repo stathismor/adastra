@@ -1,21 +1,21 @@
 import Entity from './../Entity';
-import ThreeWay from '../../behaviours/fire/ThreeWay';
+import LaserBeam from '../../behaviours/fire/LaserBeam';
 import Powerup from './Powerup';
 import Marker from '../../behaviours/Marker';
 
 export default class extends Powerup {
 
   constructor(game) {
-    super(game, 'fire_powerup');
+    super(game, 'beam_powerup');
   }
 
   spawn(owner, target) {
     super.spawn(owner, target);
-    this.addBehaviour(new Marker(this.game, this, target, 'yellow_marker'));
+    this.addBehaviour(new Marker(this.game, this, target, 'marker'));
   }
 
   apply() {
-    this.fireBehaviour = new ThreeWay(this.game, this.target);
+    this.fireBehaviour = new LaserBeam(this.game, this.target);
     this.target.changeWeapon(this.fireBehaviour);
     this.kill();
   }
