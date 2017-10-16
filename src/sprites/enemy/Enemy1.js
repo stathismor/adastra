@@ -7,9 +7,9 @@ export default class extends Enemy {
   constructor(game, x, y, target) {
     super(game, x, y, target, 'enemy1');
 
-    this.movement.maxVelocity = 200;
+    this.movement.maxVelocity = 170;
     this.movement.rotationSpeed = 2; // degrees/second
-    this.movement.acceleration = 200;
+    this.movement.acceleration = 190;
 
     this.health = 40;
     this.maxHealth = 40;

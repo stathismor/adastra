@@ -9,7 +9,7 @@ export default class extends Entity {
   constructor(game) {
     super(game, 0, 0, 'beam');
     this.anchor.set(-0.015, 0.5);
-    this.damage = 3;
+    this.damage = 1.5;
     game.physics.enable(this);
 
     game.add.tween(this).to({ alpha: BLINK_ALPHA},

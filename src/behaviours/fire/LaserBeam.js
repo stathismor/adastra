@@ -5,6 +5,7 @@ import LaserBeamBullet from '../../weapons/LaserBeamBullet';
 
 const BULLET_ANGLE = 0.33;
 const BULLET_DISTANCE = 100;
+const SMOKE_LIFETIME = 700; // milliseconds
 
 export default class extends FireBehaviour {
   constructor(game, owner) {
@@ -17,6 +18,15 @@ export default class extends FireBehaviour {
     this.key_fire_2.onDown.add(this.revive_beam, this);
     this.key_fire_1.onUp.add(this.kill_beam, this);
     this.key_fire_2.onUp.add(this.kill_beam, this);
+
+    this.damageEmitter = game.add.emitter(0, 0, 8);
+    this.damageEmitter.gravity = 0;
+    this.damageEmitter.makeParticles('damage', [1, 2]);
+
+    this.intersects = false;
+    this.beamWidth = this.beam.width;
+    this.cropRect = new Phaser.Rectangle(0, 0, this.beamWidth, this.beam.height);
+    this.beam.crop(this.cropRect);
   }
 
   revive_beam() {
@@ -36,9 +46,22 @@ export default class extends FireBehaviour {
   }
 
   update() {
+    this.intersects = false;
+
     if (this.beam.alive) {
       this.game.enemiesGroup.forEachAlive(this.processGroup, this);
     }
+
+    if (this.intersects) {
+      if (!this.damageEmitter.on) {
+        this.damageEmitter.start(false, SMOKE_LIFETIME, 90);
+      }
+    } else {
+      this.cropRect.width = this.beamWidth;
+      this.damageEmitter.on = false;
+    }
+
+    this.beam.updateCrop();
   }
 
   processGroup(group) {
@@ -51,7 +74,13 @@ export default class extends FireBehaviour {
       const rec = enemy.getBounds();
       rec.x += this.game.camera.x;
       rec.y += this.game.camera.y;
-      if (Phaser.Line.intersectsRectangle(ray, rec)) {
+      const result = new Phaser.Point();
+      if (Phaser.Line.intersectionWithRectangle(ray, rec, result)) {
+        this.intersects = true;
+        this.damageEmitter.x = result.x;
+        this.damageEmitter.y = result.y;
+        const distance = this.game.math.distance(this.beam.world.x, this.beam.world.y, result.x, result.y);
+        this.cropRect.width = distance;
         this.damageEnemy(this.owner, enemy, this.beam.damage);
       }
     }

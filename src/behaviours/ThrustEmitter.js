@@ -30,7 +30,6 @@ export default class extends Behaviour {
       this.smokeEmitter.on = false;
     } else if (!this.smokeEmitter.on && this.game.canUpdate) {
       this.smokeEmitter.start(false, SMOKE_LIFETIME, 90);
-
     }
 
     this.smokeEmitter.x = this.owner.centerX - (Math.cos(this.owner.rotation) * OFFSET);
