@@ -1,5 +1,5 @@
 import Ship from './Ship';
-import Shoot from '../behaviours/fire/Shoot';
+import Missile from '../behaviours/fire/Missile';
 import DamageEmitter from '../behaviours/DamageEmitter';
 import ThrustEmitter from '../behaviours/ThrustEmitter';
 import EnemyDamage from '../behaviours/EnemyDamage';
@@ -28,7 +28,7 @@ export default class extends Ship {
     });
 
     this.addBehaviour(new Control(this.game, this));
-    this.fireBehaviour = new Shoot(game, this);
+    this.fireBehaviour = new Missile(game, this);
     this.addBehaviour(this.fireBehaviour);
     this.addBehaviour(new RegenerateHealth(game, this));
     this.addBehaviour(new DamageEmitter(game, this));

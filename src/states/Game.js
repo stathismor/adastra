@@ -90,7 +90,7 @@ export default class extends Phaser.State {
     const waveManager = new WaveManager(this.game, this.player);
     this.hud = new Hud(this.game, this.player);
 
-    this.intro();
+    // this.intro();
   }
 
   update() {
