@@ -7,9 +7,11 @@ import BlinkingStar from '../sprites/BlinkingStar';
 import SpeedPowerup from '../sprites/powerup/SpeedPowerup';
 import FirePowerup from '../sprites/powerup/FirePowerup';
 import BeamPowerup from '../sprites/powerup/BeamPowerup';
+import MissilePowerup from '../sprites/powerup/MissilePowerup';
 import Planet from '../sprites/Planet';
 import Player from '../sprites/Player';
 import LaserBulletWeapon from '../weapons/LaserBulletWeapon';
+import MissileBullet from '../weapons/MissileBullet';
 import WaveManager from '../waves/WaveManager';
 import Hud from '../hud/Hud';
 
@@ -29,6 +31,7 @@ export default class extends Phaser.State {
     this.game.blinkingStarsGroup = this.game.add.group();
     this.game.powerupsGroup = this.game.add.group();
     this.game.enemiesGroup = this.game.add.group();
+    this.game.missilesGroup = this.game.add.group();
   }
 
   create() {
@@ -71,6 +74,13 @@ export default class extends Phaser.State {
     for (let i = 0; i < 4; i += 1) {
       this.game.powerupsGroup.addChild(new BeamPowerup(this.game));
     }
+    for (let i = 0; i < 4; i += 1) {
+      this.game.powerupsGroup.addChild(new MissilePowerup(this.game));
+    }
+
+    for (let i = 0; i < 10; i += 1) {
+      this.game.missilesGroup.addChild(new MissileBullet(this.game));
+    }
 
     this.game.shipsGroup.add(this.player);
 
@@ -90,7 +100,7 @@ export default class extends Phaser.State {
     const waveManager = new WaveManager(this.game, this.player);
     this.hud = new Hud(this.game, this.player);
 
-    // this.intro();
+    this.intro();
   }
 
   update() {
