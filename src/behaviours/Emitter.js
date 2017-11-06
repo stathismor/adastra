@@ -11,9 +11,12 @@ export default class extends Behaviour {
   constructor(game, owner) {
     super(game, owner);
 
-    this.smokeEmitter = game.add.emitter(0, 0, 8);
+    this.smokeEmitter = game.add.emitter(0, 0, 33);
     // Set motion parameters for the emitted particles
     this.smokeEmitter.gravity = 0;
+    this.smokeEmitter.angle = 0;
+    this.smokeEmitter.rotation = 0;
+    this.smokeEmitter.setAngle(0, 0, 22, 22);
 
     // Make particles fade out after 1000ms
     this.smokeEmitter.setAlpha(1, 0, SMOKE_LIFETIME, Phaser.Easing.Linear.InOut);
@@ -28,10 +31,10 @@ export default class extends Behaviour {
     if (this.owner.body.velocity.getMagnitude() < SMOKE_VELOCITY) {
       this.smokeEmitter.on = false;
     } else if (!this.smokeEmitter.on && this.game.canUpdate) {
-      this.smokeEmitter.start(false, SMOKE_LIFETIME, 90);
+      this.smokeEmitter.start(false, SMOKE_LIFETIME, 11);
     }
 
-    this.smokeEmitter.x = this.owner.centerX - (Math.cos(this.owner.rotation) * OFFSET);
-    this.smokeEmitter.y = this.owner.centerY - (Math.sin(this.owner.rotation) * OFFSET);
+    this.smokeEmitter.x = this.owner.centerX;
+    this.smokeEmitter.y = this.owner.centerY;
   }
 }

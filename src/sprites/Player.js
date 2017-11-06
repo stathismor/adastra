@@ -26,6 +26,7 @@ export default class extends Ship {
 
     this.addBehaviour(new RegenerateHealth(game, this));
     this.addBehaviour(new DamageEmitter(game, this));
+    this.addBehaviour(new Emitter(game, this));
     this.addBehaviour(new EnemyDamage(game, this));
   }
 }

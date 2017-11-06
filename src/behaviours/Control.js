@@ -12,8 +12,8 @@ export default class extends Behaviour {
   constructor(game, owner) {
     super(game, owner);
 
-    this.turnLeftAnimation = owner.animations.add('turn', [0, 2], 10.0, false);
-    this.turnRightAnimation = owner.animations.add('turn', [0, 1], 10.0, false);
+    this.turnLeftAnimation = owner.animations.add('turn', [0, 11, 12, 13, 14, 15, 16, 17, 18, 19], 25, false);
+    this.turnRightAnimation = owner.animations.add('turn', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 25, false);
 
     this.cursors = game.input.keyboard.createCursorKeys();
     this.initKeyboard(this.game, this.turnLeftAnimation, this.turnRightAnimation);
