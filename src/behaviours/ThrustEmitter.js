@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 
 import Behaviour from './Behaviour';
 
-const SMOKE_LIFETIME = 700; // milliseconds
-const OFFSET = 14;
+const SMOKE_LIFETIME = 250; // milliseconds
+const OFFSET = 16;
 const SMOKE_VELOCITY = 60;
 
 export default class extends Behaviour {
@@ -11,31 +11,31 @@ export default class extends Behaviour {
   constructor(game, owner) {
     super(game, owner);
 
-    this.smokeEmitter = game.add.emitter(0, 0, 33);
+    this.emitter = game.add.emitter(0, 0, 40);
     // Set motion parameters for the emitted particles
-    this.smokeEmitter.gravity = 0;
-    this.smokeEmitter.angle = 0;
-    this.smokeEmitter.rotation = 0;
-    this.smokeEmitter.setAngle(0, 0, 22, 22);
+    this.emitter.gravity = 0;
+    this.emitter.angle = 0;
+    this.emitter.rotation = 0;
+    this.emitter.setAngle(0, 0, 22, 22);
+    this.emitter.lifespan = 250;
 
     // Make particles fade out after 1000ms
-    this.smokeEmitter.setAlpha(1, 0, SMOKE_LIFETIME, Phaser.Easing.Linear.InOut);
+    this.emitter.setAlpha(1, 0, SMOKE_LIFETIME, Phaser.Easing.Linear.InOut);
 
     // Create the actual particles
-    this.smokeEmitter.makeParticles('damage', [1, 2]);
+    this.emitter.makeParticles('thrust_particle', [1]);
 
-    this.smokeEmitter.setAngle(-33, 33);
-    this.smokeEmitter.area = new Phaser.Rectangle(this.owner.x-10, this.owner.y-4, 20, 8);
   }
 
   update() {
     if (this.owner.body.velocity.getMagnitude() < SMOKE_VELOCITY) {
-      this.smokeEmitter.on = false;
-    } else if (!this.smokeEmitter.on && this.game.canUpdate) {
-      this.smokeEmitter.start(false, SMOKE_LIFETIME, 11);
+      this.emitter.on = false;
+    } else if (!this.emitter.on && this.game.canUpdate) {
+      this.emitter.x = this.owner.centerX - (Math.cos(this.owner.rotation) * OFFSET);
+      this.emitter.y = this.owner.centerY - (Math.sin(this.owner.rotation) * OFFSET);
+      this.emitter.emitParticle();
+      this.emitter.emitParticle(this.emitter.x - this.owner.deltaX / 2,
+                                this.emitter.y - this.owner.deltaY / 2);
     }
-
-    this.smokeEmitter.x = this.owner.centerX;
-    this.smokeEmitter.y = this.owner.centerY;
   }
 }

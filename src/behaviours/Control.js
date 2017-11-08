@@ -20,7 +20,7 @@ export default class extends Behaviour {
 
     this.thrust = new Phaser.Sprite(game, 0, 0, 'thrust');
     this.thrust.x = -owner.offsetX - this.thrust.width;
-    this.thrust.y = -owner.offsetY;
+    this.thrust.y = -owner.offsetY + 8;
     this.thrustAnim = this.thrust.animations.add('thrusting', null, 10, true);
     this.thrustAnim.play();
     owner.addChild(this.thrust);
