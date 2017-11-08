@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import Behaviour from './Behaviour';
 
 const SMOKE_LIFETIME = 700; // milliseconds
-const OFFSET = 18;
+const OFFSET = 14;
 const SMOKE_VELOCITY = 60;
 
 export default class extends Behaviour {
@@ -22,12 +22,13 @@ export default class extends Behaviour {
     this.smokeEmitter.setAlpha(1, 0, SMOKE_LIFETIME, Phaser.Easing.Linear.InOut);
 
     // Create the actual particles
-    this.smokeEmitter.makeParticles('smoke');
+    this.smokeEmitter.makeParticles('damage', [1, 2]);
+
+    this.smokeEmitter.setAngle(-33, 33);
+    this.smokeEmitter.area = new Phaser.Rectangle(this.owner.x-10, this.owner.y-4, 20, 8);
   }
 
   update() {
-    // @TODO: Not sure that's the most elegant way of starting this...
-    // (makes it run on intro otherwise)
     if (this.owner.body.velocity.getMagnitude() < SMOKE_VELOCITY) {
       this.smokeEmitter.on = false;
     } else if (!this.smokeEmitter.on && this.game.canUpdate) {

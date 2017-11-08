@@ -12,7 +12,7 @@ export default class extends Phaser.State {
     const text = this.add.text(this.world.centerX,
                                this.world.centerY,
                                'START',
-                               { font: '48px Arial', fill: DESELECT_COLOUR, align: 'center' });
+                               { font: 'Press Start 2P', fill: DESELECT_COLOUR, align: 'center', fontSize: 40 });
     text.inputEnabled = true;
     text.anchor.setTo(0.5, 0.5);
     text.events.onInputDown.add(() => {

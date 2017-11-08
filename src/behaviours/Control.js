@@ -97,25 +97,4 @@ export default class extends Behaviour {
       }
     }
   }
-
-  applySidewayFriction() {
-    // Got this idea from https://gamedev.stackexchange.com/questions/23093/creating-sideways-friction-in-a-2d-top-down-racer
-    const x = Math.cos(this.owner.rotation);
-    const y = Math.sin(this.owner.rotation);
-
-    const forwardVelocity = new Phaser.Point(x, y);
-    const rightVelocity = new Phaser.Point(-y, x); // Perpendicular vector, clockwise
-
-    const dotForward = new Phaser.Point(this.owner.body.velocity.x,
-                                        this.owner.body.velocity.y).dot(forwardVelocity);
-    const dotRight = new Phaser.Point(this.owner.body.velocity.x,
-                                      this.owner.body.velocity.y).dot(rightVelocity);
-
-    forwardVelocity.multiply(dotForward, dotForward);
-    rightVelocity.multiply(dotRight, dotRight);
-    rightVelocity.multiply(SIDEWAYS_FRICTION, SIDEWAYS_FRICTION);
-
-    forwardVelocity.add(rightVelocity.x, rightVelocity.y);
-    this.owner.body.velocity = forwardVelocity;
-  }
 }

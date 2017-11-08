@@ -7,9 +7,9 @@ export default class extends Enemy {
   constructor(game, x, y, target) {
     super(game, x, y, target, 'enemy1');
 
-    this.movement.maxVelocity = 200;
+    this.movement.maxVelocity = 170;
     this.movement.rotationSpeed = 2; // degrees/second
-    this.movement.acceleration = 200;
+    this.movement.acceleration = 190;
 
     this.health = 40;
     this.maxHealth = 40;
@@ -17,10 +17,10 @@ export default class extends Enemy {
     this.points = 20;
 
     this.addBehaviour(new AcceleratedFollow(this.game, this, target));
-    this.addBehaviour(new MovableEnemyFire(this.game, this, target,
-      {
-        fireRate: 800,
-        bulletSpeed: 300,
-      }));
+    // this.addBehaviour(new MovableEnemyFire(this.game, this, target,
+    //   {
+    //     fireRate: 800,
+    //     bulletSpeed: 300,
+    //   }));
   }
 }

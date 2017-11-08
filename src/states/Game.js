@@ -4,16 +4,18 @@ import Phaser from 'phaser';
 import Camera from '../camera/Camera';
 import Ship from '../sprites/Ship';
 import BlinkingStar from '../sprites/BlinkingStar';
+import SpeedPowerup from '../sprites/powerup/SpeedPowerup';
+import FirePowerup from '../sprites/powerup/FirePowerup';
+import BeamPowerup from '../sprites/powerup/BeamPowerup';
+import MissilePowerup from '../sprites/powerup/MissilePowerup';
 import Planet from '../sprites/Planet';
 import Player from '../sprites/Player';
-import Control from '../behaviours/Control';
-import PlayerFire from '../behaviours/PlayerFire';
 import LaserBulletWeapon from '../weapons/LaserBulletWeapon';
-import SmallLaserBullet from '../weapons/SmallLaserBullet';
+import MissileBullet from '../weapons/MissileBullet';
 import WaveManager from '../waves/WaveManager';
 import Hud from '../hud/Hud';
 
-const MAX_BLINKING_STARS = 40;
+const MAX_BLINKING_STARS = 17;
 const BG_SIZE = 1920;
 
 export default class extends Phaser.State {
@@ -21,6 +23,15 @@ export default class extends Phaser.State {
   preload() {
     this.game.canUpdate = true;
     this.game.time.advancedTiming = true;
+    // Init groups
+    this.game.planetsGroup = this.game.add.group();
+    this.game.backgroundsGroup = this.game.add.group();
+    this.game.shipsGroup = this.game.add.group();
+    this.game.explosionsGroup = this.game.add.group();
+    this.game.blinkingStarsGroup = this.game.add.group();
+    this.game.powerupsGroup = this.game.add.group();
+    this.game.enemiesGroup = this.game.add.group();
+    this.game.missilesGroup = this.game.add.group();
   }
 
   create() {
@@ -28,65 +39,74 @@ export default class extends Phaser.State {
 
     this.player = new Player(this.game, 0, 0);
 
+    this.bg = new Phaser.TileSprite(this.game,
+                                     0 - (this.game.world.centerX / 2),
+                                     0 - (this.game.world.centerY / 2),
+                                     BG_SIZE, BG_SIZE,
+                                     'back');
     this.bg1 = new Phaser.TileSprite(this.game,
                                      0 - (this.game.world.centerX / 2),
                                      0 - (this.game.world.centerY / 2),
                                      BG_SIZE, BG_SIZE,
-                                     'stars_back');
+                                     'back1');
     this.bg2 = new Phaser.TileSprite(this.game,
                                      0 - (this.game.world.centerX / 2),
                                      0 - (this.game.world.centerY / 2),
                                      BG_SIZE, BG_SIZE,
-                                     'stars_front');
+                                     'back2');
 
-    this.camera = new Camera(this.game, this.player, [this.bg1, this.bg2]);
+    this.camera = new Camera(this.game, this.player, [this.bg, this.bg1, this.bg2]);
 
-    const planets = this.game.add.group();
-    planets.addMultiple([
-      new Planet(this.game, this.player, this.camera, 'earth', 0.87, 800, 920),
-      new Planet(this.game, this.player, this.camera, 'planet', 0.75, 800, 900),
-      new Planet(this.game, this.player, this.camera, 'moon', 0.45, 800, 900),
+    this.game.planetsGroup.addMultiple([
+      new Planet(this.game, this.player, this.camera, 'earth', 0.87),
+      new Planet(this.game, this.player, this.camera, 'planet', 0.75),
+      new Planet(this.game, this.player, this.camera, 'moon', 0.45),
     ]);
+    this.game.backgroundsGroup.addMultiple([this.bg, this.bg1, this.bg2]);
 
-    this.backgrounds = this.game.add.group();
-    this.backgrounds.addMultiple([this.bg1, this.bg2]);
 
-    const ships = this.game.add.group();
-    // Because of the rendering order, this needs to be added here
-    const weapon = new LaserBulletWeapon(this.game,
-                                         this.player,
-                                         'blue_bullet',
-                                         SmallLaserBullet).getWeapon();
-    this.player.addBehaviour(new PlayerFire(this.game, this.player, weapon));
-    ships.add(this.player);
+    for (let i = 0; i < 2; i += 1) {
+      this.game.powerupsGroup.addChild(new SpeedPowerup(this.game));
+    }
+    for (let i = 0; i < 3; i += 1) {
+      this.game.powerupsGroup.addChild(new FirePowerup(this.game));
+    }
+    for (let i = 0; i < 4; i += 1) {
+      this.game.powerupsGroup.addChild(new BeamPowerup(this.game));
+    }
+    for (let i = 0; i < 4; i += 1) {
+      this.game.powerupsGroup.addChild(new MissilePowerup(this.game));
+    }
+
+    for (let i = 0; i < 10; i += 1) {
+      this.game.missilesGroup.addChild(new MissileBullet(this.game));
+    }
+
+    this.game.shipsGroup.add(this.player);
 
     //  An explosion pool
-    this.game.explosionsGroup = this.game.add.group();
     this.game.explosionsGroup.createMultiple(10, 'explosion');
     this.game.explosionsGroup.forEach((explosion) => {
       explosion.anchor.setTo(0.5);
       explosion.animations.add('explode');
     });
 
-    const blinkingStars = this.game.add.group();
+    
     for (let i = 0; i < MAX_BLINKING_STARS; i += 1) {
       const star = new BlinkingStar(this.game, this.player, this.camera);
-      blinkingStars.add(star);
+      this.game.blinkingStarsGroup.add(star);
     }
 
     const waveManager = new WaveManager(this.game, this.player);
     this.hud = new Hud(this.game, this.player);
 
-    this.controller = new Control(this.game, this.player);
-
-    // this.intro();
+    this.intro();
   }
 
   update() {
     // @TODO: Maybe there is a more elegant way of this this
     if (this.game.canUpdate) {
       this.camera.update();
-      this.controller.update();
       this.hud.update();
     }
   }
@@ -105,6 +125,7 @@ export default class extends Phaser.State {
   }
 
   intro() {
+    this.game.canUpdate = false;
     this.player.visible = false;
     this.game.camera.focusOnXY(0, 0);
 

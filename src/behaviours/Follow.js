@@ -49,6 +49,7 @@ export default class extends Behaviour {
   }
 
   rotate(targetAngle) {
+    // console.log('FOLLOW MOVEMENT', this.owner);
     // The following code has been stolen from https://gamemechanicexplorer.com/#homingmissiles-1
     if (Phaser.Math.difference(this.owner.rotation, targetAngle) > ANGLE_DIFF) {
       // Calculate difference between the current angle and targetAngle. Keep it in range from

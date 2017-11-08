@@ -47,18 +47,18 @@ export default class {
     // the distance when speeding (so as to leave more view space in front). Finally,
     // interpolate to the new position.
     let distanceX = CAMERA_DISTANCE_FIXED +
-                      (CAMERA_DISTANCE_RATE * (Math.abs(this.player.body.velocity.x *
-                                                        CAMERA_TO_PLAYER_VELOCITY_RATE)));
+                    (CAMERA_DISTANCE_RATE * (Math.abs(this.player.body.velocity.x *
+                                                      CAMERA_TO_PLAYER_VELOCITY_RATE)));
     let distanceY = CAMERA_DISTANCE_FIXED +
-                      (CAMERA_DISTANCE_RATE * (Math.abs(this.player.body.velocity.y *
-                                                        CAMERA_TO_PLAYER_VELOCITY_RATE)));
+                    (CAMERA_DISTANCE_RATE * (Math.abs(this.player.body.velocity.y *
+                                                      CAMERA_TO_PLAYER_VELOCITY_RATE)));
 
     // Decrease distance proportionally when ship is facing opposite direction from velocity
     const faceToVelocity = this.getFaceToVelocity();
     distanceX = (FACE_TO_VELOCITY_RATIO * distanceX) +
-        ((1 - FACE_TO_VELOCITY_RATIO) * faceToVelocity * distanceX);
+      ((1 - FACE_TO_VELOCITY_RATIO) * faceToVelocity * distanceX);
     distanceY = (FACE_TO_VELOCITY_RATIO * distanceY) +
-        ((1 - FACE_TO_VELOCITY_RATIO) * faceToVelocity * distanceY);
+      ((1 - FACE_TO_VELOCITY_RATIO) * faceToVelocity * distanceY);
 
     const targetX = this.player.body.x + (Math.cos(this.player.rotation) * distanceX);
     const targetY = this.player.body.y + (Math.sin(this.player.rotation) * distanceY);

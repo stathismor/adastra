@@ -1,25 +1,25 @@
 import Phaser from 'phaser';
 
-export default class LaserBulletWeapon {
-  constructor(game, owner, texture, bulletClass, properties = null) {
-    this.weapon = game.add.weapon(30, texture, undefined, undefined, bulletClass);
-    this.weapon.outOfBoundsKill = false;
-    this.weapon.checkWorldBounds = false;
-    this.weapon.bulletSpeed = 1000;
-    this.weapon.fireRate = 200;
-    this.weapon.trackSprite(owner, 14, 0);
-    this.weapon.fireAngle = owner.angle;
-    this.weapon.trackRotation = true;
-    this.weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
-    this.weapon.bulletLifespan = 3000;  // in msecs
-    this.weapon.trackOffset.x = owner.width * 0.6;
+export default class LaserBulletWeapon extends Phaser.Weapon {
+  constructor(game, owner, quantity, bulletClass, properties = null) {
+    super(game, owner);
+    this.outOfBoundsKill = false;
+    this.checkWorldBounds = false;
+    this.bulletSpeed = 1000;
+    this.fireRate = 200;
+    this.trackSprite(owner, 14, 0);
+    this.fireAngle = owner.angle;
+    this.trackRotation = true;
+    this.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
+    this.bulletLifespan = 3000;  // in msecs
+    this.trackOffset.x = owner.width * 0.6;
+    
+    this._bulletClass = bulletClass; // @HACK
+
+    this.createBullets(quantity, bulletClass.TEXTURE);
 
     if (properties) {
-      this.weapon = Object.assign(this.weapon, properties);
+      Object.assign(this, properties);
     }
-  }
-
-  getWeapon() {
-    return this.weapon;
   }
 }
