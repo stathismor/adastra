@@ -74,7 +74,7 @@ export default class extends Behaviour {
       this.owner.body.velocity.setMagnitude(Math.min(this.owner.movement.maxVelocity,
                                                      magnitude));
 
-      this.thrust.visible = true;
+      this.thrust.visible = false;
     } else if (this.key_reverse.isDown) {
       this.game.physics.arcade.accelerationFromRotation(this.owner.rotation,
                                                         -this.owner.movement.acceleration,
