@@ -12,8 +12,8 @@ export default class extends Behaviour {
   constructor(game, owner) {
     super(game, owner);
 
-    this.turnLeftAnimation = owner.animations.add('turn', [0, 11, 12, 13, 14, 15, 16, 17, 18, 19], 25, false);
-    this.turnRightAnimation = owner.animations.add('turn', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 25, false);
+    this.turnLeftAnimation = owner.animations.add('turn_left', [0, 11, 12, 13, 14, 15, 16, 17, 18, 19], 25, false);
+    this.turnRightAnimation = owner.animations.add('turn_right', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 25, false);
 
     this.cursors = game.input.keyboard.createCursorKeys();
     this.initKeyboard(this.game, this.turnLeftAnimation, this.turnRightAnimation);
@@ -32,17 +32,32 @@ export default class extends Behaviour {
     this.key_thrust = game.input.keyboard.addKey(Phaser.Keyboard.UP);
     this.key_reverse = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 
-    this.key_left.onDown.add(this.animate, {animation: turnLeftAnimation});
-    this.key_right.onDown.add(this.animate, {animation: turnRightAnimation});
+    this.key_left.onHoldContext = this;
+    this.key_right.onHoldContext = this;
+    this.key_left.onHoldCallback = this.animateLeft;
+    this.key_right.onHoldCallback = this.animateRight;
     this.key_left.onUp.add(this.resetAnimation, {animation: turnLeftAnimation});
     this.key_right.onUp.add(this.resetAnimation, {animation: turnRightAnimation});
   }
 
-  animate() {
-    if (this.animation.isReversed) {
-      this.animation.reverse();
+  animateLeft() {
+    this.animate(this.turnLeftAnimation, this.turnRightAnimation);
+  }
+
+  animateRight() {
+    this.animate(this.turnRightAnimation, this.turnLeftAnimation);
+  }
+
+  animate(animation, other) {
+    if (!other.isReversed || !other.isPlaying) {
+      if (animation.isReversed || 
+          (!animation.isPlaying && !animation.isFinished)) {
+        if (animation.isReversed) {
+         animation.reverse();
+        }
+        animation.play();
+      }
     }
-    this.animation.play();
   }
 
   resetAnimation() {
