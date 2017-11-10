@@ -24,6 +24,10 @@ export default class extends Behaviour {
     this.thrustAnim = this.thrust.animations.add('thrusting', null, 10, true);
     this.thrustAnim.play();
     owner.addChild(this.thrust);
+
+    this.previousLeftIsDown = false;
+    this.previousRightIsDown = false;
+    this.doublePressKey = null;
   }
 
   initKeyboard(game, turnLeftAnimation, turnRightAnimation) {
@@ -36,8 +40,12 @@ export default class extends Behaviour {
     this.key_right.onHoldContext = this;
     this.key_left.onHoldCallback = this.animateLeft;
     this.key_right.onHoldCallback = this.animateRight;
-    this.key_left.onUp.add(this.resetAnimation, {animation: turnLeftAnimation, other: turnRightAnimation});
-    this.key_right.onUp.add(this.resetAnimation, {animation: turnRightAnimation, other: turnLeftAnimation});
+    this.key_left.onUp.add(this.resetAnimation, {animation: turnLeftAnimation,
+                                                 other: turnRightAnimation,
+                                                 control: this});
+    this.key_right.onUp.add(this.resetAnimation, {animation: turnRightAnimation,
+                                                  other: turnLeftAnimation,
+                                                  control: this});
   }
 
   animateLeft() {
@@ -49,18 +57,28 @@ export default class extends Behaviour {
   }
 
   animate(animation, other) {
-    if (!other.isReversed || !other.isPlaying) {
-      if (animation.isReversed || 
-          (!animation.isPlaying && !animation.isFinished)) {
-        if (animation.isReversed) {
-          animation.reverse();
-        }
-        animation.play();
-      }
+    if ((this.doublePressKey === this.key_left && animation.name === 'turn_left') ||
+        (this.doublePressKey === this.key_right && animation.name === 'turn_right')) {
+      return;
     }
+
+      if (!other.isReversed || !other.isPlaying ) {
+        if (animation.isReversed || 
+            (!animation.isPlaying && !animation.isFinished)) {
+          if (animation.isReversed) {
+            animation.reverse();
+          }
+          animation.play();
+        }
+      }
   }
 
   resetAnimation() {
+    if ((this.control.doublePressKey === this.control.key_left && this.animation.name === 'turn_left') ||
+        (this.control.doublePressKey === this.control.key_right && this.animation.name === 'turn_right')) {
+      return;
+    }
+
     if (!this.other.isReversed || !this.other.isPlaying) {
       this.animation.reverse();
       if (this.animation.isFinished) {
@@ -69,14 +87,34 @@ export default class extends Behaviour {
     }
   }
 
+  doublePress() {
+    if (this.key_left.isDown && this.previousLeftIsDown && this.key_right.isDown) {
+      return this.key_right;
+    } else if (this.key_right.isDown && this.previousRightIsDown && this.key_left.isDown) {
+      return this.key_left;
+    } else {
+      return null;
+    }
+  }
+
   update() {
+    this.doublePressKey = this.doublePress();
+    let leftIsDown = this.key_left.isDown;
+    let rightIsDown = this.key_right.isDown;
+
+    if (this.doublePressKey === this.key_right) {
+      rightIsDown = false;
+    } else if (this.doublePressKey === this.key_left) {
+      leftIsDown = false;
+    }
+
     // Move
-    if (this.key_left.isDown || this.key_right.isDown) {
+    if (leftIsDown || rightIsDown) {
       let rotationSpeed = this.owner.movement.rotationSpeed;
       if (this.key_thrust.isDown || this.key_reverse.isDown) {
         rotationSpeed *= ROTATION_THRUST_FRICTION;
       }
-      if (this.key_left.isDown) {
+      if (leftIsDown) {
         this.owner.body.angularVelocity = -rotationSpeed;
       } else {
         this.owner.body.angularVelocity = rotationSpeed;
@@ -115,5 +153,8 @@ export default class extends Behaviour {
                                                            0, IMMOBILISE_LERP));
       }
     }
+
+    this.previousLeftIsDown = leftIsDown;
+    this.previousRightIsDown = rightIsDown;
   }
 }
