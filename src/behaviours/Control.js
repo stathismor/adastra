@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+ import Phaser from 'phaser';
 
 import Behaviour from './Behaviour';
 
@@ -36,8 +36,8 @@ export default class extends Behaviour {
     this.key_right.onHoldContext = this;
     this.key_left.onHoldCallback = this.animateLeft;
     this.key_right.onHoldCallback = this.animateRight;
-    this.key_left.onUp.add(this.resetAnimation, {animation: turnLeftAnimation});
-    this.key_right.onUp.add(this.resetAnimation, {animation: turnRightAnimation});
+    this.key_left.onUp.add(this.resetAnimation, {animation: turnLeftAnimation, other: turnRightAnimation});
+    this.key_right.onUp.add(this.resetAnimation, {animation: turnRightAnimation, other: turnLeftAnimation});
   }
 
   animateLeft() {
@@ -53,7 +53,7 @@ export default class extends Behaviour {
       if (animation.isReversed || 
           (!animation.isPlaying && !animation.isFinished)) {
         if (animation.isReversed) {
-         animation.reverse();
+          animation.reverse();
         }
         animation.play();
       }
@@ -61,8 +61,12 @@ export default class extends Behaviour {
   }
 
   resetAnimation() {
+    if (!this.other.isReversed || !this.other.isPlaying) {
       this.animation.reverse();
-      this.animation.play();
+      if (this.animation.isFinished) {
+        this.animation.play();
+      }
+    }
   }
 
   update() {
